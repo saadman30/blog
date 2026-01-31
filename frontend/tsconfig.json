@@ -48,7 +48,9 @@
     },
     "types": [
       "vitest/globals",
-      "@testing-library/jest-dom"
+      "@testing-library/jest-dom",
+      "react",
+      "react-dom"
     ],
     "noEmit": true,
     "esModuleInterop": true,

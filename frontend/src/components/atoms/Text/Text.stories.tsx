@@ -21,6 +21,7 @@ const meta = {
       options: ["normal", "medium", "semibold", "bold"],
     },
     italic: { control: "boolean" },
+    uppercase: { control: "boolean" },
     as: { control: "select", options: ["p", "span", "div"] },
     children: { control: "text" },
   },
@@ -56,4 +57,8 @@ export const Bold: Story = {
 
 export const Italic: Story = {
   args: { italic: true, children: "Italic text." },
+};
+
+export const Uppercase: Story = {
+  args: { size: "xs", uppercase: true, children: "Article" },
 };

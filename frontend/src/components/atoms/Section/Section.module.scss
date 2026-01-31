@@ -1,45 +1,30 @@
 @use "../../../styles/variables" as v;
 
 .root {
-  // Base: no extra layout; use className or variant for layout
+  // Semantic section wrapper; layout via Flex, gap via Flex or Spacing
 }
 
-.grid {
-  display: grid;
-  gap: v.$space-md;
+.spacingNone {
+  padding-block: 0;
+  padding-inline: 0;
 }
 
-.content {
-  font-size: v.$font-size-md;
-  line-height: 1.7;
-
-  p + p {
-    margin-top: v.$space-md;
-  }
-
-  ul,
-  ol {
-    padding-left: 1.3rem;
-    margin: v.$space-sm 0;
-  }
-
-  li + li {
-    margin-top: v.$space-2xs;
-  }
+.spacingSm {
+  padding-block: v.$space-sm;
+  padding-inline: 0;
 }
 
-.stack {
-  display: flex;
-  flex-direction: column;
-  gap: v.$space-md;
+.spacingMd {
+  padding-block: v.$space-md;
+  padding-inline: 0;
 }
 
-.intro {
-  display: grid;
-  gap: v.$space-sm;
+.spacingLg {
+  padding-block: v.$space-lg;
+  padding-inline: 0;
 }
 
-.article {
-  display: grid;
-  gap: v.$space-xl;
+.spacingXl {
+  padding-block: v.$space-xl;
+  padding-inline: 0;
 }

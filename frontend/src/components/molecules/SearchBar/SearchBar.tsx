@@ -38,4 +38,3 @@ const SearchBar = ({ placeholder = "Search articles" }: Props) => {
 };
 
 export default SearchBar;
-

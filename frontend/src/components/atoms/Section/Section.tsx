@@ -1,14 +1,10 @@
 import type { ElementType, ReactNode } from "react";
+import { clsx } from "clsx";
 
 import styles from "./Section.module.scss";
 
-export type SectionVariant =
-  | "default"
-  | "grid"
-  | "content"
-  | "stack"
-  | "intro"
-  | "article";
+/** Spacing variant: controls padding (and optionally margin) around the section. Layout use Flex; gap use Flex or Spacing. */
+export type SectionSpacing = "none" | "sm" | "md" | "lg" | "xl";
 
 export interface SectionProps {
   children: ReactNode;
@@ -19,8 +15,8 @@ export interface SectionProps {
   ariaLabel?: string;
   /** ID of the element that labels the section (maps to aria-labelledby) */
   ariaLabelledBy?: string;
-  /** Layout variant: default (none), grid, content (prose), stack (flex column), intro (tight column), article (grid, xl gap) */
-  variant?: SectionVariant;
+  /** Spacing variant: padding (and margin) around the section. For layout use Flex inside; for gap use Flex or Spacing. */
+  spacing?: SectionSpacing;
 }
 
 const Section = ({
@@ -29,22 +25,20 @@ const Section = ({
   as: Component = "section",
   ariaLabel,
   ariaLabelledBy,
-  variant = "default",
+  spacing = "md",
 }: SectionProps) => {
-  const variantClass =
-    variant === "grid"
-      ? styles.grid
-      : variant === "content"
-        ? styles.content
-        : variant === "stack"
-          ? styles.stack
-          : variant === "intro"
-            ? styles.intro
-            : variant === "article"
-              ? styles.article
-              : undefined;
+  const spacingClass =
+    spacing === "none"
+      ? styles.spacingNone
+      : spacing === "sm"
+        ? styles.spacingSm
+        : spacing === "lg"
+          ? styles.spacingLg
+          : spacing === "xl"
+            ? styles.spacingXl
+            : styles.spacingMd;
 
-  const composed = [styles.root, variantClass].filter(Boolean).join(" ");
+  const composed = clsx(styles.root, spacingClass);
 
   return (
     <Component

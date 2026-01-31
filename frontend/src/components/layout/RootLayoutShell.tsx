@@ -57,4 +57,3 @@ const RootLayoutShell = ({ children }: Props) => {
 };
 
 export default RootLayoutShell;
-

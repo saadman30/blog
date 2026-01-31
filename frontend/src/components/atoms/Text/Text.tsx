@@ -39,6 +39,8 @@ export interface TextProps {
   weight?: TextWeight;
   /** Italic text */
   italic?: boolean;
+  /** Uppercase with letter-spacing (eyebrow style) */
+  uppercase?: boolean;
   /** Rendered element */
   as?: "p" | "span" | "div";
 }
@@ -49,6 +51,7 @@ const Text = ({
   size = "md",
   weight = "normal",
   italic = false,
+  uppercase = false,
   as: Tag = "p",
 }: TextProps) => {
   const composed = [
@@ -57,6 +60,7 @@ const Text = ({
     colorMap[color],
     weightMap[weight],
     italic ? styles.italic : undefined,
+    uppercase ? styles.uppercase : undefined,
   ]
     .filter(Boolean)
     .join(" ");

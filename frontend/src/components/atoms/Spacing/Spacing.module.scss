@@ -1,0 +1,69 @@
+@use "../../../styles/variables" as v;
+
+.paddingBlockXs {
+  padding-block: v.$space-xs;
+}
+.paddingBlockSm {
+  padding-block: v.$space-sm;
+}
+.paddingBlockMd {
+  padding-block: v.$space-md;
+}
+.paddingBlockLg {
+  padding-block: v.$space-lg;
+}
+.paddingBlockXl {
+  padding-block: v.$space-xl;
+}
+
+.paddingInlineXs {
+  padding-inline: v.$space-xs;
+}
+.paddingInlineSm {
+  padding-inline: v.$space-sm;
+}
+.paddingInlineMd {
+  padding-inline: v.$space-md;
+}
+.paddingInlineLg {
+  padding-inline: v.$space-lg;
+}
+.paddingInlineXl {
+  padding-inline: v.$space-xl;
+}
+
+.marginBlockXs {
+  margin-block: v.$space-xs;
+}
+.marginBlockSm {
+  margin-block: v.$space-sm;
+}
+.marginBlockMd {
+  margin-block: v.$space-md;
+}
+.marginBlockLg {
+  margin-block: v.$space-lg;
+}
+.marginBlockXl {
+  margin-block: v.$space-xl;
+}
+
+.marginInlineXs {
+  margin-inline: v.$space-xs;
+}
+.marginInlineSm {
+  margin-inline: v.$space-sm;
+}
+.marginInlineMd {
+  margin-inline: v.$space-md;
+}
+.marginInlineLg {
+  margin-inline: v.$space-lg;
+}
+.marginInlineXl {
+  margin-inline: v.$space-xl;
+}
+
+.spacer {
+  flex-shrink: 0;
+}

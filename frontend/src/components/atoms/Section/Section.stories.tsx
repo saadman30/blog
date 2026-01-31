@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import Section from "./Section";
+import Flex from "@/components/atoms/Flex";
+import Spacing from "@/components/atoms/Spacing";
 import decorators from "@/styles/decorators.module.scss";
 
 const meta = {
@@ -8,9 +10,9 @@ const meta = {
   tags: ["autodocs"],
   component: Section,
   argTypes: {
-    variant: {
+    spacing: {
       control: "select",
-      options: ["default", "grid", "content", "stack", "intro"],
+      options: ["none", "sm", "md", "lg", "xl"],
     },
   },
 } satisfies Meta<typeof Section>;
@@ -21,73 +23,66 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: "Section content with no layout variant.",
-    variant: "default",
+    children: "Section with semantic wrapper and spacing. Layout uses Flex inside; gap via Flex or Spacing.",
+    spacing: "md",
   },
 };
 
-export const Grid: Story = {
-  args: {
-    variant: "grid",
-    ariaLabel: "Grid of items",
-    children: (
-      <>
-        <div className={decorators.demoItem}>Item 1</div>
-        <div className={decorators.demoItem}>Item 2</div>
-        <div className={decorators.demoItem}>Item 3</div>
-      </>
-    ),
-  },
+export const SpacingVariants: Story = {
+  render: () => (
+    <Flex direction="column" gap="xl">
+      <Section spacing="none" ariaLabel="No padding">
+        No padding (spacing=&quot;none&quot;)
+      </Section>
+      <Section spacing="sm" ariaLabel="Small padding">
+        Small padding (spacing=&quot;sm&quot;)
+      </Section>
+      <Section spacing="md" ariaLabel="Medium padding">
+        Medium padding (spacing=&quot;md&quot;, default)
+      </Section>
+      <Section spacing="lg" ariaLabel="Large padding">
+        Large padding (spacing=&quot;lg&quot;)
+      </Section>
+      <Section spacing="xl" ariaLabel="Extra large padding">
+        Extra large padding (spacing=&quot;xl&quot;)
+      </Section>
+    </Flex>
+  ),
 };
 
-export const Content: Story = {
-  args: {
-    variant: "content",
-    children: (
-      <>
-        <p>First paragraph with prose-style spacing.</p>
-        <p>Second paragraph gets margin from content variant.</p>
-        <ul>
-          <li>List item one</li>
-          <li>List item two</li>
-        </ul>
-      </>
-    ),
-  },
-};
-
-export const Stack: Story = {
-  args: {
-    variant: "stack",
-    children: (
-      <>
+/** Use Flex inside Section for layout; use Flex gap or Spacing for gap between items. */
+export const SectionWithFlex: Story = {
+  render: () => (
+    <Section spacing="md" ariaLabel="Stack of blocks">
+      <Flex direction="column" gap="md">
         <div>First block</div>
         <div>Second block</div>
         <div>Third block</div>
-      </>
-    ),
-  },
+      </Flex>
+    </Section>
+  ),
 };
 
-export const Intro: Story = {
-  args: {
-    variant: "intro",
-    ariaLabel: "Page introduction",
-    children: (
-      <>
-        <div>Eyebrow / label</div>
-        <div>Heading</div>
-        <div>Description text</div>
-      </>
-    ),
-  },
+/** Use Spacing for gap-like padding or margin. */
+export const SectionWithSpacing: Story = {
+  render: () => (
+    <Section spacing="md" ariaLabel="Content with spacing">
+      <Spacing paddingBlock="md">
+        <Flex direction="column" gap="sm">
+          <div>Block with padding from Spacing.</div>
+          <Spacing asSpacer marginBlock="md" />
+          <div>Gap above from Spacing spacer.</div>
+        </Flex>
+      </Spacing>
+    </Section>
+  ),
 };
 
 export const WithIdAndAriaLabelledBy: Story = {
   args: {
     id: "about",
     ariaLabelledBy: "about-heading",
-    variant: "default",
+    spacing: "md",
     children: (
       <>
         <h2 id="about-heading">About</h2>
