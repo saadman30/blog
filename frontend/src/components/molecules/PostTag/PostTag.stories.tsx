@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { fn } from "storybook/test";
 import PostTag from "./PostTag";
-import decorators from "@/stories/decorators.module.scss";
+import decorators from "@/styles/decorators.module.scss";
 
 const meta = {
   title: "Molecules/PostTag",

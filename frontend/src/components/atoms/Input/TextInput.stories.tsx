@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Bookmark, Search } from "lucide-react";
 
 import TextInput from "./TextInput";
-import decorators from "@/stories/decorators.module.scss";
+import decorators from "@/styles/decorators.module.scss";
 
 const meta = {
   title: "Atoms/Input/TextInput",

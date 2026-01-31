@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import BlogIndexTemplate from "./BlogIndex";
-import { mockPosts } from "@/stories/mockData";
+import { mockPosts } from "@/lib/mockData";
 
 const meta = {
   title: "Templates/BlogIndex",

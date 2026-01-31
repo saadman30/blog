@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import RootLayoutShell from "./RootLayoutShell";
-import decorators from "@/stories/decorators.module.scss";
+import decorators from "@/styles/decorators.module.scss";
 
 const meta = {
   title: "Layout/RootLayoutShell",

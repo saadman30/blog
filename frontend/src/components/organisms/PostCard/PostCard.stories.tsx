@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { fn } from "storybook/test";
 import PostCard from "./PostCard";
-import { mockPost, mockPosts } from "@/stories/mockData";
-import decorators from "@/stories/decorators.module.scss";
+import { mockPost, mockPosts } from "@/lib/mockData";
+import decorators from "@/styles/decorators.module.scss";
 
 const meta = {
   title: "Organisms/PostCard",

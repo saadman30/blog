@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import ArticleJsonLd from "./ArticleJsonLd";
-import { mockPost } from "@/stories/mockData";
+import { mockPost } from "@/lib/mockData";
 
 const meta = {
   title: "Atoms/ArticleJsonLd",
