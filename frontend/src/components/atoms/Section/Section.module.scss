@@ -1,4 +1,4 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 
 .root {
   // Semantic section wrapper; layout via Flex, gap via Flex or Spacing
@@ -10,21 +10,21 @@
 }
 
 .spacingSm {
-  padding-block: v.$space-sm;
+  padding-block: $space-3;
   padding-inline: 0;
 }
 
 .spacingMd {
-  padding-block: v.$space-md;
+  padding-block: $space-4;
   padding-inline: 0;
 }
 
 .spacingLg {
-  padding-block: v.$space-lg;
+  padding-block: $space-6;
   padding-inline: 0;
 }
 
 .spacingXl {
-  padding-block: v.$space-xl;
+  padding-block: $space-8;
   padding-inline: 0;
 }

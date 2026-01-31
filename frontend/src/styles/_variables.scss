@@ -12,21 +12,24 @@ $font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
 $font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
   Consolas, "Liberation Mono", "Courier New", monospace;
 
-$font-size-xs: 0.75rem;
-$font-size-sm: 0.875rem;
-$font-size-md: 1rem;
-$font-size-lg: 1.25rem;
-$font-size-xl: 1.5rem;
-$font-size-2xl: 2rem;
-$font-size-3xl: 3rem;
+// Font scale (semantic): derived from $font-size-base so one change scales all.
+$font-size-base: 16px;
+$font-size-xs: $font-size-base * 0.75;   // 12px
+$font-size-sm: $font-size-base * 0.875;  // 14px
+$font-size-md: $font-size-base * 1.25;   // 20px
+$font-size-lg: $font-size-base * 1.5;    // 24px
+$font-size-xl: $font-size-base * 2;       // 32px
+$font-size-2xl: $font-size-base * 3;     // 48px
 
-$space-2xs: 0.25rem;
-$space-xs: 0.5rem;
-$space-sm: 0.75rem;
-$space-md: 1rem;
-$space-lg: 1.5rem;
-$space-xl: 2rem;
-$space-2xl: 3rem;
+// Spacing scale: use $space-unit * n. The number is the factor (e.g. $space-6 = 6 × 4px = 24px).
+$space-unit: 4px;
+$space-1: $space-unit * 1;
+$space-2: $space-unit * 2;
+$space-3: $space-unit * 3;
+$space-4: $space-unit * 4;
+$space-6: $space-unit * 6;
+$space-8: $space-unit * 8;
+$space-12: $space-unit * 12;
 
 $radius-sm: 4px;
 $radius-md: 999px;

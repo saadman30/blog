@@ -1,4 +1,4 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 
 .root {
   display: flex;
@@ -57,17 +57,17 @@
 }
 
 .root--gapXs {
-  gap: v.$space-xs;
+  gap: $space-2;
 }
 .root--gapSm {
-  gap: v.$space-sm;
+  gap: $space-3;
 }
 .root--gapMd {
-  gap: v.$space-md;
+  gap: $space-4;
 }
 .root--gapLg {
-  gap: v.$space-lg;
+  gap: $space-6;
 }
 .root--gapXl {
-  gap: v.$space-xl;
+  gap: $space-8;
 }

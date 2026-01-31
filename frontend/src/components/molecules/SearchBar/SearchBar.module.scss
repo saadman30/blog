@@ -1,8 +1,8 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 @use "../../../styles/mixins" as m;
 
 .wrapper {
-  @include m.flex-center(row, v.$space-sm);
+  @include m.flex-center(row, $space-3);
 }
 
 .input {
@@ -11,6 +11,6 @@
 
 .filters {
   display: flex;
-  gap: v.$space-xs;
+  gap: $space-2;
   align-items: center;
 }

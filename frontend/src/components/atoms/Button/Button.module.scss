@@ -1,17 +1,17 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 @use "../../../styles/mixins" as m;
 
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: v.$space-xs;
-  border-radius: v.$radius-pill;
+  gap: $space-2;
+  border-radius: $radius-pill;
   border: 1px solid var(--border-subtle);
-  padding: v.$space-xs v.$space-sm;
+  padding: $space-2 $space-3;
   background-color: var(--bg-elevated);
   color: var(--text);
-  font-size: v.$font-size-sm;
+  font-size: $font-size-sm;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   cursor: pointer;

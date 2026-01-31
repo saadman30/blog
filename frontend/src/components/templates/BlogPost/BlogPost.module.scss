@@ -1,7 +1,7 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 
 .tagsRow {
   display: flex;
   flex-wrap: wrap;
-  gap: v.$space-xs;
+  gap: $space-2;
 }

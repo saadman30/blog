@@ -1,8 +1,8 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 
 .tag {
   display: inline-block;
-  border-radius: v.$radius-pill;
+  border-radius: $radius-pill;
   border: 1px solid var(--border-subtle);
   font-size: 0.7rem;
   letter-spacing: 0.16em;
@@ -10,9 +10,9 @@
   color: var(--text-muted);
 
   :global(button) {
-    padding: 0.18rem v.$space-xs;
+    padding: 0.18rem $space-2;
     border: none;
-    border-radius: v.$radius-pill;
+    border-radius: $radius-pill;
     font-size: inherit;
     letter-spacing: inherit;
     text-transform: inherit;

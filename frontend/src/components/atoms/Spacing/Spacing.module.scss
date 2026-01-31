@@ -1,67 +1,67 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 
 .paddingBlockXs {
-  padding-block: v.$space-xs;
+  padding-block: $space-2;
 }
 .paddingBlockSm {
-  padding-block: v.$space-sm;
+  padding-block: $space-3;
 }
 .paddingBlockMd {
-  padding-block: v.$space-md;
+  padding-block: $space-4;
 }
 .paddingBlockLg {
-  padding-block: v.$space-lg;
+  padding-block: $space-6;
 }
 .paddingBlockXl {
-  padding-block: v.$space-xl;
+  padding-block: $space-8;
 }
 
 .paddingInlineXs {
-  padding-inline: v.$space-xs;
+  padding-inline: $space-2;
 }
 .paddingInlineSm {
-  padding-inline: v.$space-sm;
+  padding-inline: $space-3;
 }
 .paddingInlineMd {
-  padding-inline: v.$space-md;
+  padding-inline: $space-4;
 }
 .paddingInlineLg {
-  padding-inline: v.$space-lg;
+  padding-inline: $space-6;
 }
 .paddingInlineXl {
-  padding-inline: v.$space-xl;
+  padding-inline: $space-8;
 }
 
 .marginBlockXs {
-  margin-block: v.$space-xs;
+  margin-block: $space-2;
 }
 .marginBlockSm {
-  margin-block: v.$space-sm;
+  margin-block: $space-3;
 }
 .marginBlockMd {
-  margin-block: v.$space-md;
+  margin-block: $space-4;
 }
 .marginBlockLg {
-  margin-block: v.$space-lg;
+  margin-block: $space-6;
 }
 .marginBlockXl {
-  margin-block: v.$space-xl;
+  margin-block: $space-8;
 }
 
 .marginInlineXs {
-  margin-inline: v.$space-xs;
+  margin-inline: $space-2;
 }
 .marginInlineSm {
-  margin-inline: v.$space-sm;
+  margin-inline: $space-3;
 }
 .marginInlineMd {
-  margin-inline: v.$space-md;
+  margin-inline: $space-4;
 }
 .marginInlineLg {
-  margin-inline: v.$space-lg;
+  margin-inline: $space-6;
 }
 .marginInlineXl {
-  margin-inline: v.$space-xl;
+  margin-inline: $space-8;
 }
 
 .spacer {

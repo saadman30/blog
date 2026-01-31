@@ -1,13 +1,13 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 @use "../../../styles/mixins" as m;
 
 .root {
   border-radius: 18px;
   border: 1px solid var(--border-subtle);
-  padding: v.$space-md v.$space-lg;
+  padding: $space-4 $space-6;
   background-color: var(--bg-elevated);
   display: grid;
-  gap: v.$space-sm;
+  gap: $space-3;
   @include m.subtle-ease;
 
   &:hover {

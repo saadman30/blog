@@ -1,4 +1,4 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 
 .inputWrapper {
   position: relative;
@@ -7,13 +7,13 @@
 
 .input {
   width: 100%;
-  border-radius: v.$radius-pill;
+  border-radius: $radius-pill;
   border: 1px solid var(--border-subtle);
-  padding: v.$space-xs v.$space-sm;
+  padding: $space-2 $space-3;
   padding-left: 2.1rem;
   background-color: var(--bg-elevated);
   color: var(--text);
-  font-size: v.$font-size-sm;
+  font-size: $font-size-sm;
 
   &::placeholder {
     color: var(--text-muted);
@@ -23,7 +23,7 @@
 .leadingIcon {
   position: absolute;
   inset-block: 0;
-  left: v.$space-sm;
+  left: $space-3;
   display: flex;
   align-items: center;
   pointer-events: none;

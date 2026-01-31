@@ -1,4 +1,4 @@
-@use "../../../styles/variables" as v;
+@use "../../../styles/variables" as *;
 
 .root {
   margin: 0;
@@ -7,27 +7,27 @@
 
 // —— Size —————————————————————————————————————————————————————————————
 .sizeXs {
-  font-size: v.$font-size-xs;
+  font-size: $font-size-xs;
 }
 
 .sizeSm {
-  font-size: v.$font-size-sm;
+  font-size: $font-size-sm;
 }
 
 .sizeMd {
-  font-size: v.$font-size-md;
+  font-size: $font-size-base;
 }
 
 .sizeLg {
-  font-size: v.$font-size-lg;
+  font-size: $font-size-md;
 }
 
 .sizeXl {
-  font-size: v.$font-size-xl;
+  font-size: $font-size-lg;
 }
 
 .size2xl {
-  font-size: v.$font-size-2xl;
+  font-size: $font-size-xl;
 }
 
 // —— Color ————————————————————————————————————————————————————————————

@@ -1,4 +1,4 @@
-@use "../../styles/variables" as v;
+@use "../../styles/variables" as *;
 @use "../../styles/mixins" as m;
 
 .shell {
@@ -14,8 +14,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: v.$space-lg;
-  padding: v.$space-md v.$space-lg;
+  gap: $space-6;
+  padding: $space-4 $space-6;
   border-bottom: 1px solid var(--border-subtle);
   backdrop-filter: blur(18px);
   background: color-mix(in srgb, var(--bg) 80%, transparent);
@@ -25,7 +25,7 @@
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-size: v.$font-size-sm;
+  font-size: $font-size-sm;
   color: inherit;
   text-decoration: none;
 
@@ -46,11 +46,11 @@
   padding: 0;
   display: flex;
   align-items: center;
-  gap: v.$space-lg;
+  gap: $space-6;
 }
 
 .navLink {
-  font-size: v.$font-size-sm;
+  font-size: $font-size-sm;
   font-weight: 500;
   color: var(--text-muted);
   text-decoration: none;
@@ -62,12 +62,12 @@
 }
 
 .themeToggle {
-  border-radius: v.$radius-pill;
+  border-radius: $radius-pill;
   border: 1px solid var(--border-subtle);
-  padding: 0.45rem v.$space-sm;
+  padding: 0.45rem $space-3;
   background-color: var(--bg-elevated);
   color: var(--text);
-  font-size: v.$font-size-sm;
+  font-size: $font-size-sm;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   cursor: pointer;
@@ -80,12 +80,12 @@
 }
 
 .content {
-  padding-block: v.$space-lg v.$space-2xl;
+  padding-block: $space-6 $space-12;
 }
 
 .footer {
-  padding: v.$space-md v.$space-lg;
+  padding: $space-4 $space-6;
   border-top: 1px solid var(--border-subtle);
-  font-size: v.$font-size-xs;
+  font-size: $font-size-xs;
   color: var(--text-muted);
 }
