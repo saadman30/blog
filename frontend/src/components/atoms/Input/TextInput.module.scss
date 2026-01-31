@@ -1,0 +1,31 @@
+@use "../../../styles/variables" as v;
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  border-radius: v.$radius-pill;
+  border: 1px solid var(--border-subtle);
+  padding: v.$space-xs v.$space-sm;
+  padding-left: 2.1rem;
+  background-color: var(--bg-elevated);
+  color: var(--text);
+  font-size: v.$font-size-sm;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.leadingIcon {
+  position: absolute;
+  inset-block: 0;
+  left: v.$space-sm;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  color: var(--text-muted);
+}

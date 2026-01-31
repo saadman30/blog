@@ -1,0 +1,20 @@
+#
+# Development image: install deps, run Next.js dev server + json-server.
+# Used by docker compose --profile dev; volume mounts make file changes reflect in the container.
+#
+
+FROM node:22-alpine
+
+WORKDIR /app
+
+RUN corepack enable
+
+COPY package.json ./
+RUN pnpm install
+
+# Copy app so the image works without a volume; volumes will override at runtime
+COPY . .
+
+EXPOSE 3000 4000
+
+CMD ["sh", "-c", "npx json-server --watch mock/db.json --port 4000 & exec pnpm dev"]

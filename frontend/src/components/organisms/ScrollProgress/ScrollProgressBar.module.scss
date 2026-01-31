@@ -1,0 +1,16 @@
+.barRoot {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--text));
+  transform-origin: left;
+  transform: scaleX(var(--scroll-progress, 0));
+  transition: transform 80ms linear;
+}

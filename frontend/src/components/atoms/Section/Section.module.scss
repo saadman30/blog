@@ -1,0 +1,45 @@
+@use "../../../styles/variables" as v;
+
+.root {
+  // Base: no extra layout; use className or variant for layout
+}
+
+.grid {
+  display: grid;
+  gap: v.$space-md;
+}
+
+.content {
+  font-size: v.$font-size-md;
+  line-height: 1.7;
+
+  p + p {
+    margin-top: v.$space-md;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.3rem;
+    margin: v.$space-sm 0;
+  }
+
+  li + li {
+    margin-top: v.$space-2xs;
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-md;
+}
+
+.intro {
+  display: grid;
+  gap: v.$space-sm;
+}
+
+.article {
+  display: grid;
+  gap: v.$space-xl;
+}

@@ -1,0 +1,13 @@
+@use "../../../styles/variables" as v;
+
+.title {
+  font-size: 1.1rem;
+  letter-spacing: -0.03em;
+}
+
+.excerpt {
+  p {
+    font-size: v.$font-size-sm;
+    color: var(--text-muted);
+  }
+}

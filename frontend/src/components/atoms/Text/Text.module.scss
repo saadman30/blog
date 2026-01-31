@@ -1,0 +1,70 @@
+@use "../../../styles/variables" as v;
+
+.root {
+  margin: 0;
+  line-height: 1.6;
+}
+
+// —— Size —————————————————————————————————————————————————————————————
+.sizeXs {
+  font-size: v.$font-size-xs;
+}
+
+.sizeSm {
+  font-size: v.$font-size-sm;
+}
+
+.sizeMd {
+  font-size: v.$font-size-md;
+}
+
+.sizeLg {
+  font-size: v.$font-size-lg;
+}
+
+.sizeXl {
+  font-size: v.$font-size-xl;
+}
+
+.size2xl {
+  font-size: v.$font-size-2xl;
+}
+
+// —— Color ————————————————————————————————————————————————————————————
+.colorDefault {
+  color: var(--text);
+}
+
+.colorMuted {
+  color: var(--text-muted);
+}
+
+.colorPrimary {
+  color: var(--primary);
+}
+
+.colorAccent {
+  color: var(--accent);
+}
+
+// —— Weight —————————————————————————————————————————————————────────——
+.weightNormal {
+  font-weight: 400;
+}
+
+.weightMedium {
+  font-weight: 500;
+}
+
+.weightSemibold {
+  font-weight: 600;
+}
+
+.weightBold {
+  font-weight: 700;
+}
+
+// —— Style —————————————————————————————————————————————————────────————
+.italic {
+  font-style: italic;
+}

@@ -1,0 +1,33 @@
+@use "../../../styles/variables" as v;
+
+.tag {
+  display: inline-block;
+  border-radius: v.$radius-pill;
+  border: 1px solid var(--border-subtle);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+
+  :global(button) {
+    padding: 0.18rem v.$space-xs;
+    border: none;
+    border-radius: v.$radius-pill;
+    font-size: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: inherit;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  :global(button:hover) {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}

@@ -1,0 +1,18 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.root {
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  padding: v.$space-md v.$space-lg;
+  background-color: var(--bg-elevated);
+  display: grid;
+  gap: v.$space-sm;
+  @include m.subtle-ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+}

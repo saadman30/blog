@@ -1,0 +1,51 @@
+// Shared decorator layout classes for Storybook stories. No inline styles in stories.
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stackSm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.demoItem {
+  padding: 0.5rem;
+  background: var(--bg-elevated);
+  border-radius: 4px;
+}
+
+.scrollDemo {
+  padding: 2rem;
+  min-height: 200vh;
+}
+
+.scrollDemoSpacer {
+  margin-top: 50vh;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  max-width: 960px;
+}
+
+.mainNarrow {
+  padding: 2rem;
+  max-width: 65ch;
+}
+
+.inlineIcon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

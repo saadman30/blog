@@ -1,0 +1,73 @@
+@use "../../../styles/variables" as v;
+
+.root {
+  display: flex;
+}
+
+.root--row {
+  flex-direction: row;
+}
+.root--column {
+  flex-direction: column;
+}
+.root--rowReverse {
+  flex-direction: row-reverse;
+}
+.root--columnReverse {
+  flex-direction: column-reverse;
+}
+
+.root--justifyStart {
+  justify-content: flex-start;
+}
+.root--justifyEnd {
+  justify-content: flex-end;
+}
+.root--justifyCenter {
+  justify-content: center;
+}
+.root--justifyBetween {
+  justify-content: space-between;
+}
+.root--justifyAround {
+  justify-content: space-around;
+}
+
+.root--alignStart {
+  align-items: flex-start;
+}
+.root--alignEnd {
+  align-items: flex-end;
+}
+.root--alignCenter {
+  align-items: center;
+}
+.root--alignStretch {
+  align-items: stretch;
+}
+.root--alignBaseline {
+  align-items: baseline;
+}
+
+.root--wrap {
+  flex-wrap: wrap;
+}
+.root--nowrap {
+  flex-wrap: nowrap;
+}
+
+.root--gapXs {
+  gap: v.$space-xs;
+}
+.root--gapSm {
+  gap: v.$space-sm;
+}
+.root--gapMd {
+  gap: v.$space-md;
+}
+.root--gapLg {
+  gap: v.$space-lg;
+}
+.root--gapXl {
+  gap: v.$space-xl;
+}

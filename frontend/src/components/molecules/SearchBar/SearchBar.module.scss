@@ -1,0 +1,16 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.wrapper {
+  @include m.flex-center(row, v.$space-sm);
+}
+
+.input {
+  flex: 1;
+}
+
+.filters {
+  display: flex;
+  gap: v.$space-xs;
+  align-items: center;
+}

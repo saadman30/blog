@@ -1,0 +1,20 @@
+@use "../../../styles/variables" as v;
+
+.heading {
+  letter-spacing: -0.04em;
+}
+
+.h1 {
+  font-size: clamp(v.$font-size-2xl, 4vw, v.$font-size-3xl);
+  line-height: 1.05;
+}
+
+.h2 {
+  font-size: clamp(v.$font-size-xl, 3vw, 2.2rem);
+  line-height: 1.1;
+}
+
+.h3 {
+  font-size: v.$font-size-lg;
+  line-height: 1.3;
+}

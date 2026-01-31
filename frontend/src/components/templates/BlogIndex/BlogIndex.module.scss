@@ -1,0 +1,6 @@
+@use "../../../styles/variables" as v;
+
+.metaRow {
+  font-size: v.$font-size-sm;
+  color: var(--text-muted);
+}

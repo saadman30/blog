@@ -1,0 +1,73 @@
+# Single compose file: production by default, dev via --profile dev.
+#
+# Production (built app + json-server in one container):
+#   docker compose --profile prod up --build
+#   → app http://localhost:3000  api http://localhost:4000
+#
+# Development with HOT RELOAD (no rebuild for code changes; use this for editing):
+#   docker compose --profile dev up --build   # first time or after changing deps/Dockerfile
+#   docker compose --profile dev up           # then just "up"; edit code → changes at http://localhost:3001
+#   → app http://localhost:3001  api http://localhost:4001
+#   (Dev and prod use different ports so they never conflict.)
+
+services:
+  # ——— Production (use: docker compose --profile prod up) ———
+  frontend:
+    profiles:
+      - prod
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+      - "4000:4000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_BASE_URL: "http://localhost:4000"
+
+  # ——— Development (only with --profile dev) ———
+  api:
+    profiles:
+      - dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4001:4000"
+    volumes:
+      - ./frontend/mock:/app/mock
+    command: npx json-server --watch mock/db.json --port 4000 --host 0.0.0.0
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://127.0.0.1:4000/posts',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\""]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  frontend-dev:
+    profiles:
+      - dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_BASE_URL: "http://localhost:4001"
+      API_BASE_URL: "http://api:4000"
+      # Let pnpm run in Docker without TTY (avoids ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY)
+      CI: "true"
+      # File watching in Docker (host filesystem): polling so changes hot-reload
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on:
+      api:
+        condition: service_healthy
+    command: sh -c "pnpm install && exec pnpm exec next dev -H 0.0.0.0 --webpack"
+
+volumes:
+  frontend_node_modules:

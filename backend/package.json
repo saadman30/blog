@@ -1,0 +1,9 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Placeholder backend service for future API/SSR extensions.",
+  "scripts": {
+    "dev": "node index.mjs"
+  }
+}

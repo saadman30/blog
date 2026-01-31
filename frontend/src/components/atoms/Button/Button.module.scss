@@ -1,0 +1,51 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$space-xs;
+  border-radius: v.$radius-pill;
+  border: 1px solid var(--border-subtle);
+  padding: v.$space-xs v.$space-sm;
+  background-color: var(--bg-elevated);
+  color: var(--text);
+  font-size: v.$font-size-sm;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  @include m.subtle-ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.16);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+.primary {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.ghost {
+  background-color: transparent;
+}
+
+.ghostPressed {
+  border-color: var(--accent);
+  color: var(--accent);
+}

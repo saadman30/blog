@@ -1,0 +1,702 @@
+# .cursorrules — React · Next.js · SCSS · Atomic Design · Testing
+# ================================================================
+# This file is the single source of truth for every AI-assisted code
+# generation in this project. Read it in full before writing anything.
+# ================================================================
+
+
+# ─────────────────────────────────────────────────────────────────
+# 1. PROJECT OVERVIEW & PHILOSOPHY
+# ─────────────────────────────────────────────────────────────────
+
+You are a senior React / Next.js engineer working inside a codebase that
+enforces Atomic Design as its structural backbone. Every component lives
+at exactly one level of the atom → molecule → organism → template → page
+hierarchy. Styling is done exclusively in SCSS using a BEM-ish naming
+convention scoped to Atomic Design levels. Testing is not optional — every
+component ships with matching unit and integration tests.
+
+Core principles that override everything else:
+  1. Composability over monolithic components.
+  2. Styles are always co-located with the component that owns them.
+  3. Logic is separated from presentation as much as physically possible.
+  4. Every public-facing export is tested.
+  5. Next.js conventions (App Router, server/client boundaries) are sacred.
+  6. Components are self-sufficient: do NOT accept or forward className from
+     parents, pages, or any other caller. All visual variations (size, variant,
+     layout) are controlled exclusively via props. A parent or page must never
+     modify a component's appearance by passing classes or style overrides.
+  7. No inline CSS: never use the style= prop. All styling lives in the
+     component's *.module.scss file (or global tokens). This is non-negotiable.
+
+
+# ─────────────────────────────────────────────────────────────────
+# 2. DIRECTORY STRUCTURE
+# ─────────────────────────────────────────────────────────────────
+
+# Root layout (App Router)
+#
+# src/
+# ├── app/                          # Next.js App Router root
+# │   ├── layout.tsx                # Root layout (metadata, providers)
+# │   ├── page.tsx                  # Home page (re-exports a template)
+# │   ├── (marketing)/              # Route group — no layout nesting
+# │   │   ├── about/page.tsx
+# │   │   └── pricing/page.tsx
+# │   └── (app)/                    # Authenticated route group
+# │       ├── layout.tsx            # Auth-gated shared layout
+# │       └── dashboard/page.tsx
+# ├── components/                   # Atomic Design hierarchy
+# │   ├── atoms/
+# │   │   ├── button/
+# │   │   │   ├── Button.tsx
+# │   │   │   ├── Button.module.scss
+# │   │   │   ├── Button.test.tsx
+# │   │   │   └── index.ts          # barrel export
+# │   │   ├── input/
+# │   │   └── ...
+# │   ├── molecules/
+# │   │   ├── search-bar/
+# │   │   └── ...
+# │   ├── organisms/
+# │   │   ├── header/
+# │   │   └── ...
+# │   ├── templates/
+# │   │   ├── dashboard-layout/
+# │   │   └── ...
+# │   └── pages/                    # Page-level compositions (rarely needed
+# │       └── ...                   #   with App Router — prefer app/ pages)
+# ├── hooks/                        # Custom React hooks (shared)
+# │   ├── useAuth.ts
+# │   └── useAuth.test.ts
+# ├── context/                      # React Context providers
+# │   └── ThemeContext.tsx
+# ├── utils/                        # Pure utility functions
+# │   ├── formatDate.ts
+# │   └── formatDate.test.ts
+# ├── styles/                       # Global SCSS only
+# │   ├── _variables.scss
+# │   ├── _mixins.scss
+# │   ├── _reset.scss
+# │   └── globals.scss              # Imported once in root layout
+# ├── types/                        # Shared TypeScript types / interfaces
+# │   └── index.d.ts
+# └── middleware.ts                 # Next.js middleware (auth, i18n, etc.)
+
+Rules:
+  • Every component folder is kebab-case and contains exactly:
+      ComponentName.tsx | Component.module.scss | Component.test.tsx | index.ts
+  • The index.ts barrel ONLY re-exports the default component.
+      export { default } from './Button';
+  • No index.ts barrel files anywhere else (no src/components/index.ts).
+    Import paths must be explicit to the component folder.
+  • Shared types go in src/types/. Component-local types are defined
+    at the top of the .tsx file — never in a separate .d.ts per component.
+
+
+# ─────────────────────────────────────────────────────────────────
+# 3. ATOMIC DESIGN — STRICT HIERARCHY RULES
+# ─────────────────────────────────────────────────────────────────
+
+# 3.1 Atoms
+# ─────────
+# Indivisible UI building blocks. They have NO children that are themselves
+# custom components (native HTML elements are fine).
+#
+# Examples: Button, Input, Label, Icon, Badge, Avatar, Spinner, Tooltip
+#
+# Rules:
+#   • Props interface must be exported and named <Name>Props.
+#   • Do NOT accept or forward className. Expose variations via props only
+#     (e.g. variant, size). The component owns all of its styling.
+#   • Must forward refs with React.forwardRef when wrapping a native
+#     element that supports it (input, button, textarea, select, a).
+#   • Default exports only. No named component exports from the file.
+#   • No business logic — only rendering and ARIA attributes.
+#   • No useState / useEffect unless it is purely cosmetic
+#     (e.g. a ripple animation on click).
+
+# 3.2 Molecules
+# ──────────────
+# Functional groups of atoms that do ONE coherent job.
+#
+# Examples: SearchBar (Input + Button + Icon), FormField (Label + Input + error text),
+#           Card (Avatar + text atoms), Pagination
+#
+# Rules:
+#   • May compose atoms only — never other molecules or higher.
+#   • May introduce ONE piece of local state if needed for internal
+#     interaction (e.g. dropdown open/closed).
+#   • Must still export a <Name>Props. Do NOT accept className; use props for
+#     variations.
+#   • If the molecule needs data-fetching, extract it into a custom hook
+#     that lives in src/hooks/ and pass data via props.
+
+# 3.3 Organisms
+# ──────────────
+# Larger, possibly context-aware sections of the page.
+#
+# Examples: Header, Footer, Sidebar, ProductGrid, CommentThread
+#
+# Rules:
+#   • May compose atoms AND molecules.
+#   • May consume React Context or call custom hooks that fetch data.
+#   • May have multiple pieces of internal state.
+#   • Do NOT accept className; export <Name>Props and control look via props.
+#   • Keep render logic readable — extract sub-sections into local
+#     helper components (prefixed with underscore, not exported).
+
+# 3.4 Templates
+# ──────────────
+# Page-level layouts that slot in organisms and define the content grid.
+# They are STATELESS and AGNOSTIC to the data source.
+#
+# Examples: DashboardLayout, MarketingLayout, SettingsLayout
+#
+# Rules:
+#   • Props are almost entirely children / slot props.
+#   • Zero data-fetching.  Zero useState.
+#   • The single place where the responsive page grid / layout is defined.
+#   • Do NOT accept className; variations via props only.
+
+# 3.5 Pages  (src/app/**/ page.tsx)
+# ──────────────────────────────────
+# Next.js page files that wire up data and hand it to a template.
+#
+# Rules:
+#   • In App Router, page.tsx IS the page.  It can be async (server-side
+#     data fetching) and passes resolved data to a template.
+#   • If the page needs client interactivity, create a 'use client'
+#     wrapper component and import it — do NOT put 'use client' in page.tsx
+#     unless the entire page is a client component.
+#   • Keep page.tsx under ~40 lines.  Large compositions belong in templates.
+
+# Enforcement checklist for every PR:
+#   [ ] Atom imports only atoms or primitives?
+#   [ ] Molecule imports only atoms?
+#   [ ] Organism imports only atoms + molecules?
+#   [ ] Template imports only atoms + molecules + organisms?
+#   [ ] Page imports only templates (+ organisms if needed at the top)?
+#   [ ] No circular imports between any atomic levels?
+
+
+# ─────────────────────────────────────────────────────────────────
+# 4. REACT & NEXT.JS CONVENTIONS
+# ─────────────────────────────────────────────────────────────────
+
+# 4.1 Server vs. Client Components
+# ──────────────────────────────────
+# Default: every component is a Server Component.
+# Add 'use client' ONLY when you need:
+#   • useState / useReducer
+#   • useEffect / useLayoutEffect
+#   • Event handlers (onClick, onChange …)
+#   • Browser APIs (window, document)
+#   • Third-party libraries that require the DOM
+#
+# Strategy: push 'use client' as far down the tree as possible.
+# A good pattern is a <FooClient /> wrapper around an atom that needs
+# interactivity, imported into an otherwise-server organism.
+
+# 4.2 Data Fetching
+# ──────────────────
+# • Server Components: fetch directly inside the component or in a
+#   dedicated async function. Use React.cache() for deduplication.
+# • Client Components: fetch inside custom hooks (useSWR / React Query).
+#   NEVER fetch inside useEffect directly — always abstract to a hook.
+# • Route Handlers (src/app/api/…): for mutations and webhook endpoints.
+# • Revalidation: use Next.js revalidatePath / revalidateTag in Server
+#   Actions after a mutation.
+
+# 4.3 Server Actions
+# ────────────────────
+# • Defined with 'use server' at the top of the function or file.
+# • Used for form submissions and mutations — not for reading data.
+# • Always validate input with Zod on the server side before acting.
+# • Return a typed result: { success: true, data } | { success: false, error }.
+
+# 4.4 Hooks Rules
+# ──────────────────
+# • Custom hooks are prefixed with `use`.  Filename matches: useMyHook.ts.
+# • A hook that performs side-effects (fetch, subscription) must be
+#   thoroughly tested with renderHook (see Testing section).
+# • Hooks that wrap external libraries (e.g. toast, modal) live in
+#   src/hooks/ and are thin wrappers — never duplicate library logic.
+
+# 4.5 TypeScript Strictness
+# ───────────────────────────
+# • Strict mode is ON.  No `any`.  Use `unknown` and narrow.
+# • All props interfaces are explicit — no implicit props.
+# • Event handler types use React.ChangeEvent<HTMLInputElement>, etc.
+# • Avoid type assertions (`as`) except in tests or intentional coercions.
+# • Generic components (e.g. <Select<T>>) are preferred over `any[]`.
+
+
+# ─────────────────────────────────────────────────────────────────
+# 5. SCSS — STYLING CONVENTIONS
+# ─────────────────────────────────────────────────────────────────
+
+# 5.1 CSS Modules (always) — no inline styles
+# ───────────────────────────────────────────
+# Every component uses a *.module.scss file.  This gives automatic local
+# scoping.  No global class leakage.
+#
+#   import styles from './Button.module.scss';
+#   <button className={styles.root}>…</button>
+#
+# Do NOT use inline CSS. The style= prop is forbidden. All layout, spacing,
+# colors, and typography belong in the component's *.module.scss (or global
+# tokens). This rule is mandatory.
+
+# 5.2 Class Naming — Flat BEM inside the Module
+# ─────────────────────────────────────────────────
+# Because CSS Modules already scope, you do NOT need a component prefix.
+# Use a flat BEM-lite approach:
+#
+#   .root          — the outermost wrapper (always present)
+#   .label         — a child element
+#   .label--active — a modifier on .label
+#   .root--large   — a modifier on .root
+#
+# DO NOT nest selectors more than ONE level deep:
+#   ✅  .root { ... }  .label { ... }  .root--large { ... }
+#   ❌  .root { .label { .icon { … } } }   // too deep
+
+# 5.3 Global Variables & Mixins
+# ──────────────────────────────
+# All design tokens live in src/styles/_variables.scss:
+#
+#   // Colors
+#   $color-primary:        #1a73e8;
+#   $color-primary-hover:  #1558b0;
+#   $color-surface:        #ffffff;
+#   $color-text:           #1f1f1f;
+#   $color-error:          #d32f2f;
+#
+#   // Spacing (8 px base)
+#   $space-1: 4px;   $space-2: 8px;   $space-3: 12px;
+#   $space-4: 16px;  $space-5: 24px;  $space-6: 32px;
+#   $space-8: 48px;  $space-10: 64px;
+#
+#   // Typography
+#   $font-sans:  'Inter', sans-serif;
+#   $font-mono:  'JetBrains Mono', monospace;
+#   $text-xs: 0.75rem;  $text-sm: 0.875rem;  $text-base: 1rem;
+#   $text-lg: 1.125rem; $text-xl: 1.25rem;   $text-2xl: 1.5rem;
+#
+#   // Radii
+#   $radius-sm: 4px;  $radius-md: 8px;  $radius-lg: 12px;  $radius-full: 9999px;
+#
+#   // Shadows
+#   $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+#   $shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+#   $shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+#
+# Mixins live in src/styles/_mixins.scss:
+#
+#   @mixin respond-to($breakpoint) { … }   // sm | md | lg | xl
+#   @mixin visually-hidden { … }
+#   @mixin truncate($lines: 1) { … }
+#   @mixin focus-ring { … }               // consistent :focus-visible style
+
+# 5.4 Component SCSS Template
+# ──────────────────────────────
+# Every module follows this structure (order matters for readability):
+#
+#   @use '../../../styles/variables' as *;
+#   @use '../../../styles/mixins' as *;
+#
+#   // 1. Root / layout
+#   .root { … }
+#
+#   // 2. Children (flat, no nesting)
+#   .label { … }
+#   .icon  { … }
+#
+#   // 3. Modifiers (always on an element defined above)
+#   .root--large   { … }
+#   .root--primary { … }
+#   .label--active { … }
+#
+#   // 4. States (pseudo-classes live with their element)
+#   .root:hover        { … }
+#   .root:focus-visible { @include focus-ring; }
+#   .root:disabled     { … }
+
+# 5.5 Dark Mode
+# ──────────────
+# Use CSS custom properties (variables) on :root / [data-theme="dark"].
+# SCSS variables are compile-time only — they cannot respond to theme.
+#
+#   // globals.scss
+#   :root {
+#     --color-bg:   #ffffff;
+#     --color-text: #1f1f1f;
+#   }
+#   [data-theme="dark"] {
+#     --color-bg:   #0f1117;
+#     --color-text: #e2e8f0;
+#   }
+#
+# Inside components reference the CSS custom property:
+#   .root { background: var(--color-bg); color: var(--color-text); }
+
+# 5.6 Responsive Design
+# ──────────────────────
+# Mobile-first.  Use the respond-to mixin:
+#
+#   .root {
+#     flex-direction: column;
+#     @include respond-to(md) { flex-direction: row; }
+#   }
+#
+# Never use px for font sizes (use rem).  Use px only for borders and shadows.
+
+
+# ─────────────────────────────────────────────────────────────────
+# 6. COMPONENT AUTHORING TEMPLATE
+# ─────────────────────────────────────────────────────────────────
+
+# Every component follows this exact skeleton.  Deviate only with a comment
+# explaining why.
+
+# ── Button.tsx ──────────────────────────────────────────────────
+#
+# 'use client';                          // only if needed (see §4.1)
+#
+# import React from 'react';
+# import { clsx } from 'clsx';          // or 'cn' from your util
+# import styles from './Button.module.scss';
+#
+# // 1. Props interface — exported, suffixed with Props
+# export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+#   variant?: 'primary' | 'secondary' | 'ghost';
+#   size?:    'sm' | 'md' | 'lg';
+#   isLoading?: boolean;
+#   // … other custom props
+# }
+#
+# // 2. Component — default export, forwardRef if wrapping native element
+# const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+#   ({ variant = 'primary', size = 'md', isLoading, children, ...props }, ref) => {
+#     return (
+#       <button
+#         ref={ref}
+#         disabled={isLoading || props.disabled}
+#         className={clsx(
+#           styles.root,
+#           styles[`root--${variant}`],
+#           styles[`root--${size}`],
+#           { [styles['root--loading']]: isLoading }
+#         )}
+#         {...props}
+#       >
+#         {isLoading && <span className={styles.spinner} aria-hidden="true" />}
+#         <span className={styles.label}>{children}</span>
+#       </button>
+#     );
+#   }
+# );
+#
+# Button.displayName = 'Button';       // required for forwardRef debugging
+#
+# export default Button;
+# ────────────────────────────────────────────────────────────────
+
+
+# ─────────────────────────────────────────────────────────────────
+# 7. TESTING — STRATEGY, TOOLING & CONVENTIONS
+# ─────────────────────────────────────────────────────────────────
+
+# 7.1 Tooling Stack
+# ──────────────────
+# • Test Runner:   Vitest  (fast, ESM-native, Vite-compatible)
+# • DOM Library:   @testing-library/react   (render, screen, userEvent)
+# • User Events:   @testing-library/user-event v14  (realistic simulation)
+# • Assertions:    Vitest built-in expect  (vi.fn, vi.mock, vi.spyOn)
+# • Snapshots:     Vitest inline snapshots (sparingly — prefer assertions)
+# • Hooks:         @testing-library/react  →  renderHook
+# • Coverage:      Vitest --coverage (Istanbul under the hood)
+# • E2E:           Playwright  (see §7.6)
+
+# 7.2 File & Naming Conventions
+# ──────────────────────────────
+# • Test files live NEXT TO the source file in the same directory.
+#     Button.tsx          → Button.test.tsx
+#     useAuth.ts          → useAuth.test.ts
+#     formatDate.ts       → formatDate.test.ts
+# • File MUST end in .test.tsx (components) or .test.ts (pure logic).
+# • describe() block matches the exported name.
+# • Each test starts with a verb:  renders …  / calls … / does not …
+#
+#   describe('Button', () => {
+#     it('renders with default variant', () => { … });
+#     it('calls onClick when clicked', async () => { … });
+#     it('does not fire onClick when disabled', async () => { … });
+#     it('shows a spinner when isLoading is true', () => { … });
+#   });
+
+# 7.3 What to Test at Each Atomic Level
+# ──────────────────────────────────────
+#
+# ATOMS — unit tests only (isolated, no children to compose)
+#   • Renders correctly with each variant / size / state prop.
+#   • Forwards ref.
+#   • Forwards native HTML attributes (aria-*, data-*, id).
+#   • Fires callback props (onClick, onChange, onBlur, …).
+#   • Applies the correct CSS module class for each modifier.
+#   • Handles disabled / loading / error states.
+#   • Accessible: roles, labels, keyboard navigation.
+#
+# MOLECULES — unit + light integration
+#   • All atom children render.
+#   • Internal state transitions work (open/close dropdown, etc.).
+#   • Callback props bubble correctly from child atoms.
+#   • Variations are driven by props; no external class overrides.
+#   • Accessibility of the composed unit (form labeling, ARIA live).
+#
+# ORGANISMS — integration tests
+#   • Renders with realistic props / context.
+#   • User workflows work end-to-end within the organism
+#     (e.g., typing into search → results appear → click result).
+#   • Context consumption: mock the context provider and verify behavior.
+#   • Async data: mock the hook / fetch, verify loading → success → error states.
+#   • Does NOT test internal atom/molecule behavior — trust those unit tests.
+#
+# TEMPLATES — smoke + layout tests
+#   • Renders without crashing given minimal props.
+#   • Correct layout structure (children slots render in right positions).
+#   • Responsive behavior (resize → layout change) if applicable.
+#
+# PAGES (App Router) — integration via Playwright (E2E) preferred.
+#   • Unit tests are limited; prefer E2E for full-page flows.
+#   • If unit-testing, mock next/navigation and any server actions.
+
+# 7.4 Testing Patterns & Anti-Patterns
+# ──────────────────────────────────────
+#
+# ✅ DO:
+#   • Query by role, then by name:
+#       screen.getByRole('button', { name: /submit/i })
+#   • Use userEvent for ALL user interactions (not fireEvent):
+#       const user = userEvent.setup();
+#       await user.click(screen.getByRole('button'));
+#   • Wrap async assertions in waitFor or findBy:
+#       await screen.findByText('Success');
+#   • Mock at the module boundary (the hook or the API client), NOT deep internals.
+#   • Test the PUBLIC contract of a component — what props go in, what the user sees.
+#   • Write one assertion per test when possible. If grouping, keep it logical.
+#
+# ❌ DO NOT:
+#   • DO NOT query by class name, data-testid (as first choice), or snapshot
+#     the full rendered tree.
+#   • DO NOT use fireEvent for user interactions.
+#   • DO NOT test implementation details (internal state variable names,
+#     private helper functions, CSS class application order).
+#   • DO NOT import the component's SCSS module in tests.
+#   • DO NOT let tests depend on sibling test execution order
+#     (each test is fully isolated).
+#   • DO NOT mock React itself or core hooks (useState, useEffect).
+
+# 7.5 Hook Testing Pattern
+# ──────────────────────────
+#
+# import { renderHook, act } from '@testing-library/react';
+# import useCounter from './useCounter';
+#
+# describe('useCounter', () => {
+#   it('initializes with the provided value', () => {
+#     const { result } = renderHook(() => useCounter(5));
+#     expect(result.current.count).toBe(5);
+#   });
+#
+#   it('increments on increment()', async () => {
+#     const { result } = renderHook(() => useCounter(0));
+#     act(() => { result.current.increment(); });
+#     expect(result.current.count).toBe(1);
+#   });
+#
+#   // For hooks that need a provider:
+#   const wrapper = ({ children }) => <AuthProvider>{children}</AuthProvider>;
+#   const { result } = renderHook(() => useAuth(), { wrapper });
+# });
+
+# 7.6 End-to-End (Playwright)
+# ──────────────────────────────
+# • E2E tests live in a top-level tests/e2e/ directory, mirroring routes:
+#     tests/e2e/dashboard.spec.ts
+# • Use Page Object Model for reusable selectors and actions.
+# • Test critical user journeys only — login → dashboard → action.
+# • Run against a deployed preview or local dev server.
+# • Use Playwright's auto-wait — never add manual waits/sleeps.
+
+# 7.7 Coverage Targets
+# ──────────────────────
+# • Atoms:      ≥ 90 %  (statements + branches)
+# • Molecules:  ≥ 85 %
+# • Organisms:  ≥ 75 %
+# • Hooks:      ≥ 90 %
+# • Utils:      100 %   (pure functions — no excuse)
+# • Templates:  ≥ 60 %  (smoke-level is acceptable)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 8. IMPORTS & MODULE RESOLUTION
+# ─────────────────────────────────────────────────────────────────
+
+# tsconfig paths (configured in tsconfig.json):
+#   "@/*"          → src/*
+#   "@/components/*" → src/components/*
+#   "@/hooks/*"    → src/hooks/*
+#   "@/styles/*"   → src/styles/*
+#   "@/utils/*"    → src/utils/*
+#   "@/types/*"    → src/types/*
+
+# Import order (enforced by ESLint — import/order plugin):
+#   1. Node built-ins          (fs, path …)
+#   2. External packages       (react, next/…, clsx …)
+#   3. Internal aliases        (@/hooks/useAuth)
+#   4. Relative — components   (../atoms/Button)
+#   5. Relative — styles       (./Button.module.scss)
+#
+# Each group separated by a blank line.
+
+# Rule: NEVER use a barrel import that crosses atomic levels.
+#   ❌  import { Button, Input } from '@/components';
+#   ✅  import Button from '@/components/atoms/button';
+#   ✅  import Input  from '@/components/atoms/input';
+
+
+# ─────────────────────────────────────────────────────────────────
+# 9. ACCESSIBILITY (a11y) REQUIREMENTS
+# ─────────────────────────────────────────────────────────────────
+
+# Every component must satisfy:
+#   • Semantic HTML:  <button> not <div onClick>, <nav>, <main>, <section>, etc.
+#   • Keyboard navigable: all interactive elements reachable via Tab,
+#     actionable via Enter / Space.
+#   • Focus visible:  :focus-visible styles are NEVER suppressed.
+#     Use the $focus-ring mixin.
+#   • ARIA:
+#       – Labels: aria-label or associated <label> for every input.
+#       – Roles: use native roles; add aria-role only when overriding semantics.
+#       – Live regions: aria-live="polite" for dynamic status updates.
+#       – Hidden decorative content: aria-hidden="true".
+#   • Color contrast: ≥ 4.5:1 for normal text, ≥ 3:1 for large text.
+#   • Test with axe (jest-axe or playwright-axe) in CI.
+
+
+# ─────────────────────────────────────────────────────────────────
+# 10. PERFORMANCE GUIDELINES
+# ─────────────────────────────────────────────────────────────────
+
+# • Lazy-load organisms and below when they are not above the fold:
+#     const HeavyOrganism = React.lazy(() => import('@/components/organisms/heavy'));
+#     (or use Next.js dynamic() for code-splitting with SSR support)
+#
+# • Memoize expensive renders:
+#     – React.memo() on atoms / molecules that receive stable props from lists.
+#     – useMemo() for derived data inside hooks — never in render directly.
+#     – useCallback() only when passing callbacks to memoized children.
+#
+# • Images:  always use Next.js <Image /> with sizes prop.
+# • Fonts:  use next/font for zero layout shift.
+# • Avoid layout thrash:  read DOM measurements in useLayoutEffect, not useEffect.
+# • Bundle: keep individual component bundles < 50 kB (gzipped).
+
+
+# ─────────────────────────────────────────────────────────────────
+# 11. LINTING & FORMATTING (enforced in CI)
+# ─────────────────────────────────────────────────────────────────
+
+# ESLint plugins / configs that MUST be active:
+#   • eslint-plugin-react-hooks          → Rules of Hooks
+#   • eslint-plugin-jsx-a11y             → Accessibility lint
+#   • eslint-plugin-import               → Import order, no circular deps
+#   • eslint-plugin-@next/next           → Next.js best practices
+#   • @typescript-eslint/strict          → TypeScript strictness
+#   • eslint-plugin-tailwindcss          → (only if Tailwind is present)
+#
+# Prettier:
+#   • Single quotes.  Trailing commas (all).  Semi-colons.
+#   • Print width: 100.  Tab width: 2.  Bracket spacing: true.
+#
+# Stylelint:
+#   • stylelint-scss                     → SCSS syntax rules
+#   • stylelint-order                    → Property order within blocks
+#   • No !important (ban it via rule).
+#   • No color literals — always use variables or CSS custom properties.
+
+
+# ─────────────────────────────────────────────────────────────────
+# 12. COMMON PITFALLS — READ BEFORE YOU CODE
+# ─────────────────────────────────────────────────────────────────
+
+# 1. "use client" creep: Marking a parent 'use client' makes ALL its
+#    descendants client-side too.  Push it to the leaves.
+#
+# 2. Missing displayName on forwardRef: React DevTools will show "Anonymous".
+#    Always set Component.displayName = 'ComponentName'.
+#
+# 3. SCSS module class undefined: If styles.foo is undefined at runtime,
+#    the class name in the .module.scss does not match.  It is case-sensitive.
+#
+# 4. Stale closure in useEffect: If a callback references state, include it
+#    in the dependency array or use useCallback.
+#
+# 5. Testing with act() warnings: Wrap state-changing calls in act().
+#    If using userEvent.setup(), it handles this automatically.
+#
+# 6. Server Action in a Client Component: You cannot define a Server Action
+#    inside a 'use client' file.  Import it from a separate 'use server' file.
+#
+# 7. Fetching in useEffect: Always extract fetch logic into a custom hook
+#    and use an abort controller or SWR for cancellation / deduplication.
+#
+# 8. CSS specificity wars: With CSS Modules + BEM modifiers there should
+#    be no specificity conflicts.  If you find yourself using :global or
+#    nesting > 1 level, refactor.
+#
+# 9. Importing SCSS globally by accident: Only globals.scss is imported
+#     in the root layout.  All other styles are .module.scss — period.
+#
+# 10. Passing className or style from a parent: Forbidden. Components are
+#     self-sufficient; expose variant/size/layout via props and implement
+#     all styling in the component's own *.module.scss.
+
+
+# ─────────────────────────────────────────────────────────────────
+# 13. QUICK-REFERENCE CHEAT SHEET
+# ─────────────────────────────────────────────────────────────────
+
+# New Atom?
+#   mkdir -p src/components/atoms/my-thing
+#   touch MyThing.tsx MyThing.module.scss MyThing.test.tsx index.ts
+
+# New Molecule?
+#   mkdir -p src/components/molecules/my-group
+#   touch MyGroup.tsx MyGroup.module.scss MyGroup.test.tsx index.ts
+
+# New Hook?
+#   touch src/hooks/useMyHook.ts src/hooks/useMyHook.test.ts
+
+# New Util?
+#   touch src/utils/myUtil.ts src/utils/myUtil.test.ts
+
+# Run tests?
+#   npx vitest                        # watch mode
+#   npx vitest --coverage             # with coverage report
+#   npx vitest --run                  # single pass (CI)
+
+# Run E2E?
+#   npx playwright test               # all specs
+#   npx playwright test dashboard     # single spec
+
+# Lint?
+#   npx eslint src/
+#   npx stylelint "src/**/*.module.scss"
+
+
+# ═══════════════════════════════════════════════════════════════════
+# END OF .cursorrules
+# ═══════════════════════════════════════════════════════════════════

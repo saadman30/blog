@@ -1,0 +1,7 @@
+@use "../../../styles/variables" as v;
+
+.tagsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-xs;
+}

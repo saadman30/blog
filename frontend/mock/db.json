@@ -1,0 +1,114 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "slug": "designing-with-constraints",
+      "title": "Designing with Constraints",
+      "excerpt": "Why strong constraints produce cleaner interfaces and faster products.",
+      "body": "Design is the art of applying constraints intentionally. When we remove options, we allow intent to surface. The best design systems—from Dieter Rams to Apple's HIG—share one trait: they say no more than they say yes.\n\nConstraints aren't limitations; they're guardrails that free users from decision fatigue. A button that can only be primary or secondary is easier to use than one with twelve variants. Typography scales with five steps beat infinite font sizes every time.\n\nThis applies beyond UI. Roadmaps, feature sets, and even team structure benefit from deliberate constraint. The question isn't \"what could we add?\" but \"what's the minimum we need to be excellent?\"",
+      "tags": ["design", "product", "craft"],
+      "publishedAt": "2025-12-10T09:00:00.000Z",
+      "readingMinutesOverride": null,
+      "coverImage": "/images/posts/constraints.jpg"
+    },
+    {
+      "id": 2,
+      "slug": "engineering-for-focus",
+      "title": "Engineering for Focus",
+      "excerpt": "Systems and patterns that help teams move without noise.",
+      "body": "Focus is not an accident; it's an engineered property of a working environment. Slack channels, meeting culture, and notification defaults either protect attention or fragment it.\n\nWe've seen teams cut \"sync\" meetings by half and ship faster. The trick wasn't working longer—it was reducing context switches. Async-first doesn't mean \"never talk\"; it means \"default to written, scheduled to verbal.\"\n\nCode reflects this too. Monorepos, strict lint rules, and shared component libraries reduce \"where does this go?\" moments. Boring technology choices often win because they reduce mental load. The goal is a codebase where the next change has an obvious home.",
+      "tags": ["engineering", "teams"],
+      "publishedAt": "2026-01-02T09:00:00.000Z",
+      "readingMinutesOverride": 6,
+      "coverImage": "/images/posts/focus.jpg"
+    },
+    {
+      "id": 3,
+      "slug": "minimal-interfaces-maximal-signal",
+      "title": "Minimal Interfaces, Maximal Signal",
+      "excerpt": "How to strip UI until only what matters remains.",
+      "body": "Every pixel competes for attention. The best interfaces surrender most of them to breathing room. Whitespace isn't empty—it's hierarchy. A single primary action per screen beats a toolbar of eight.\n\nWe've redesigned dashboards by asking: \"What's the one thing the user came here to do?\" Everything else became secondary or hidden. Conversion went up; support tickets went down. Clarity is a feature.\n\nThis applies to copy, too. Short labels, clear errors, and no jargon. If a user has to Google a term in your app, you've already lost. Minimal isn't sparse—it's precise.",
+      "tags": ["design", "UX", "product"],
+      "publishedAt": "2026-01-08T14:00:00.000Z",
+      "readingMinutesOverride": 5,
+      "coverImage": "/images/posts/minimal.jpg"
+    },
+    {
+      "id": 4,
+      "slug": "systems-over-heroics",
+      "title": "Systems Over Heroics",
+      "excerpt": "Building for the long run means designing for normal days, not just launch.",
+      "body": "Heroic efforts get products out the door; systems keep them healthy. On-call rotations, runbooks, feature flags, and gradual rollouts exist so that \"fix it in prod\" stays rare.\n\nWe optimize for the 99% of days when nothing is on fire. Automated tests, incremental deploys, and observable metrics turn surprises into routine. The goal isn't zero failures—it's predictable recovery.\n\nCulture follows structure. Blameless postmortems, documented decisions, and shared ownership emerge when the system doesn't rely on one person's memory. Sustainable pace beats crunch.",
+      "tags": ["engineering", "systems", "craft"],
+      "publishedAt": "2026-01-12T10:00:00.000Z",
+      "readingMinutesOverride": null,
+      "coverImage": "/images/posts/systems.jpg"
+    },
+    {
+      "id": 5,
+      "slug": "writing-for-the-web",
+      "title": "Writing for the Web",
+      "excerpt": "Short sentences, clear structure, and why you should draft in plain text.",
+      "body": "Web readers scan. Headings, lists, and one idea per paragraph respect that. Long blocks of prose work in print; on screens they feel like walls.\n\nWe've shifted all internal docs to plain text or Markdown first. No formatting wars, no hidden styles—just structure. Export to PDF or HTML when you need it. The constraint improves clarity.\n\nTone matters as much as structure. Active voice, concrete examples, and \"you\" instead of \"the user\" make documentation people actually use. Good writing is a design decision.",
+      "tags": ["craft", "design", "UX"],
+      "publishedAt": "2026-01-15T08:30:00.000Z",
+      "readingMinutesOverride": 4,
+      "coverImage": "/images/posts/writing.jpg"
+    },
+    {
+      "id": 6,
+      "slug": "the-cost-of-features",
+      "title": "The Cost of Features",
+      "excerpt": "Every new option multiplies complexity. Here's how we decide what to build.",
+      "body": "Features have a compounding cost. One new toggle means more states to test, more docs to write, more UI to maintain. Ten toggles mean combinations nobody will ever try—but you still have to support them.\n\nWe use a simple filter: \"Would we remove this if we had to justify it tomorrow?\" If the answer is unsure, we don't ship it yet. We also track \"feature inventory\"—how many knobs exist in a given surface—and cap it. When we hit the cap, something old goes before something new comes in.\n\nThis sounds harsh, but it's liberating. \"No\" is a complete answer. The best product decisions are often subtractive.",
+      "tags": ["product", "design"],
+      "publishedAt": "2026-01-18T11:00:00.000Z",
+      "readingMinutesOverride": 6,
+      "coverImage": "/images/posts/features.jpg"
+    },
+    {
+      "id": 7,
+      "slug": "remote-first-rituals",
+      "title": "Remote-First Rituals",
+      "excerpt": "Small habits that keep distributed teams aligned without endless meetings.",
+      "body": "Remote-first isn't \"everyone on Zoom.\" It's written updates, async reviews, and meetings only when conversation is the point. We start every week with a short \"what I'm focusing on\" post. No status theatre—just signal.\n\nWe've replaced standups with a shared thread. Replacements for hallway conversation—lightweight channels, optional coffee calls—exist, but they're opt-in. Default is focus time; interaction is scheduled or low-friction.\n\nThe hardest part was trust. Letting go of \"see people at their desk\" required clear outcomes and milestones. When \"done\" is defined in writing, location doesn't matter.",
+      "tags": ["teams", "engineering", "product"],
+      "publishedAt": "2026-01-20T09:00:00.000Z",
+      "readingMinutesOverride": 5,
+      "coverImage": "/images/posts/remote.jpg"
+    },
+    {
+      "id": 8,
+      "slug": "accessibility-as-default",
+      "title": "Accessibility as Default",
+      "excerpt": "Inclusive design isn't a layer—it's the base.",
+      "body": "Accessibility isn't a checklist you run before launch. It's semantic HTML, keyboard navigation, and contrast ratios from day one. We treat it like security: you don't add it at the end.\n\nOur components ship with ARIA where needed, focus states, and no mouse-only interactions. Designs are reviewed for color and motion—prefers-reduced-motion isn't an afterthought. This doesn't limit creativity; it improves it. Constraints push better solutions.\n\nThe business case is clear: broader audience, fewer support issues, and alignment with regulations. The human case is clearer: everyone deserves to use what we build.",
+      "tags": ["UX", "design", "craft"],
+      "publishedAt": "2026-01-22T14:30:00.000Z",
+      "readingMinutesOverride": 5,
+      "coverImage": "/images/posts/a11y.jpg"
+    },
+    {
+      "id": 9,
+      "slug": "slow-down-to-ship-faster",
+      "title": "Slow Down to Ship Faster",
+      "excerpt": "Why taking time for design and refactors pays off in velocity.",
+      "body": "Rushing begets more rushing. Skipped design leads to rework; skipped tests lead to production fires. We've learned that a day spent on architecture saves a week of patches.\n\nWe now bake \"design time\" into every feature. No coding until flows and edge cases are roughly agreed. For bigger changes, we spike, then refactor before scaling. It feels slower in the moment—fewer commits per week—but we ship fewer rollbacks and spend less time in incident mode.\n\nFast is sustainable pace plus clear priorities. Slow down the right things so the rest can move at full speed.",
+      "tags": ["engineering", "product", "craft"],
+      "publishedAt": "2026-01-25T10:00:00.000Z",
+      "readingMinutesOverride": 4,
+      "coverImage": "/images/posts/pace.jpg"
+    },
+    {
+      "id": 10,
+      "slug": "typography-and-identity",
+      "title": "Typography and Identity",
+      "excerpt": "How type choices shape the personality of your product.",
+      "body": "Fonts carry meaning before a single word is read. Serif vs sans, weight, spacing—they signal serious vs playful, established vs experimental. We pick type early and change it rarely.\n\nWe use a two-font system: one for UI, one for long-form. The UI font is neutral and legible at small sizes; the editorial font has more character for articles and marketing. Consistency builds recognition.\n\nVariable fonts have made this easier—one file, many weights—but the principle stays: fewer, better choices. Typography is identity. Treat it that way.",
+      "tags": ["design", "craft"],
+      "publishedAt": "2026-01-27T08:00:00.000Z",
+      "readingMinutesOverride": 4,
+      "coverImage": "/images/posts/type.jpg"
+    }
+  ]
+}

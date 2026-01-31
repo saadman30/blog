@@ -1,0 +1,85 @@
+"use client";
+
+import type { Post } from "@/types";
+
+import styles from "./BlogPost.module.scss";
+import { estimateReadingMinutes } from "@/lib/readingTime";
+import { useBookmarksStore } from "@/store/bookmarksStore";
+import { Bookmark, BookmarkCheck } from "lucide-react";
+import Text from "@/components/atoms/Text";
+import Heading from "@/components/atoms/Heading";
+import Eyebrow from "@/components/atoms/Eyebrow";
+import Section from "@/components/atoms/Section";
+import Flex from "@/components/atoms/Flex";
+import Button from "@/components/atoms/Button";
+import PostTag from "@/components/molecules/PostTag";
+import ScrollProgressBar from "@/components/organisms/ScrollProgress";
+import PageLayout from "@/components/templates/PageLayout";
+
+interface Props {
+  post: Post;
+}
+
+const BlogPostTemplate = ({ post }: Props) => {
+  const { isBookmarked, toggleBookmark } = useBookmarksStore();
+  const bookmarked = isBookmarked(post.id);
+
+  const readingMinutes =
+    post.readingMinutesOverride ?? estimateReadingMinutes(post.body);
+
+  const date = new Date(post.publishedAt);
+  const formattedDate = date.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric"
+  });
+
+  return (
+    <>
+      <ScrollProgressBar />
+      <PageLayout variant="narrow">
+        <Section as="article" variant="article">
+          <Section as="header" variant="intro">
+            <Eyebrow>Article</Eyebrow>
+            <Heading level="h1">{post.title}</Heading>
+            <Flex justify="between" align="center" gap="sm">
+              <Text as="span" size="sm" color="muted">
+                {formattedDate} · {readingMinutes} min read
+              </Text>
+              <Button
+                type="button"
+                variant="ghost"
+                pressed={bookmarked}
+                onClick={() => toggleBookmark(post.id)}
+              >
+                {bookmarked ? (
+                  <BookmarkCheck size={16} aria-hidden />
+                ) : (
+                  <Bookmark size={16} aria-hidden />
+                )}
+                {bookmarked ? "Saved" : "Save"}
+              </Button>
+            </Flex>
+            {post.tags.length ? (
+              <div className={styles.tagsRow}>
+                {post.tags.map((tag) => (
+                  <PostTag key={tag} label={tag} />
+                ))}
+              </div>
+            ) : null}
+          </Section>
+          <Section variant="content">
+            {post.body.split(/\n{2,}/).map((para, index) => (
+              <Text key={index} as="p" color="default" size="md">
+                {para}
+              </Text>
+            ))}
+          </Section>
+        </Section>
+      </PageLayout>
+    </>
+  );
+};
+
+export default BlogPostTemplate;
+

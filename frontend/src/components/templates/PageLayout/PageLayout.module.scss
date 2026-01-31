@@ -1,0 +1,16 @@
+@use "../../../styles/variables" as v;
+
+.root {
+  margin: 0 auto;
+  padding: v.$space-2xl v.$space-lg 4rem;
+  display: grid;
+  gap: v.$space-xl;
+}
+
+.narrow {
+  max-width: 960px;
+}
+
+.wide {
+  max-width: 72rem;
+}

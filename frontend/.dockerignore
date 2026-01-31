@@ -1,0 +1,42 @@
+# Dependencies — installed in container via pnpm install
+node_modules
+.pnpm-store
+
+# Build output — produced by pnpm build in container
+.next
+out
+
+# Git and IDE
+.git
+.gitignore
+.cursor
+*.md
+!mock/**/*.md
+
+# Tests and tooling (not needed for production build)
+coverage
+.nyc_output
+.playwright
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+*.stories.tsx
+__tests__
+e2e
+tests
+playwright.config.*
+vitest.config.*
+vitest.setup.*
+.storybook
+
+# Env and local
+.env
+.env.*
+!.env.example
+Dockerfile*
+.dockerignore
+
+# Misc
+*.log
+.DS_Store
