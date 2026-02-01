@@ -1,0 +1,10 @@
+@use "@/styles/variables" as *;
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($grid-min-column-sm, 1fr));
+  gap: $space-6;
+}

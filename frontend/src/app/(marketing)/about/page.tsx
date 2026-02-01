@@ -3,14 +3,14 @@ import Link from "@/components/atoms/Link";
 import Box from "@/components/atoms/Box";
 import Flex from "@/components/atoms/Flex";
 import Heading from "@/components/atoms/Heading";
+import Image from "@/components/atoms/Image";
 import Section from "@/components/atoms/Section";
 import Text from "@/components/atoms/Text";
 import ContentCard from "@/components/organisms/ContentCard";
+import ContentCardList from "@/components/organisms/ContentCardList";
 import ExperienceTimeline, {
   type ExperienceItem,
 } from "@/components/organisms/ExperienceTimeline";
-
-import styles from "./about.module.scss";
 
 interface ProjectItem {
   title: string;
@@ -136,37 +136,40 @@ export default function AboutPage() {
 
       {/* About */}
       <Section id="about" ariaLabelledBy="about-heading" divider>
-        <div className={styles.aboutGrid}>
-            <div className={styles.aboutContent}>
-              <Heading level="h2" id="about-heading">
-                Passionate about creating impactful web experiences
-              </Heading>
-              <Text color="muted" size="md">
-                With over 5 years of experience in full-stack development, I
-                specialize in building scalable web applications using modern
-                technologies. My expertise includes React, Node.js, and cloud
-                architecture. I&apos;m passionate about creating elegant
-                solutions to complex problems and sharing knowledge with the
-                developer community.
-              </Text>
-              <Flex as="div" wrap gap="sm">
-                <Link
-                  href="https://github.com"
-                  variant="button"
-                  external
-                >
-                  GitHub
-                </Link>
-                <Link href="/cv.pdf" variant="button" download>
-                  Download CV
-                </Link>
-              </Flex>
-            </div>
-            <div className={styles.aboutImage} aria-hidden>
-              <div className={styles.imagePlaceholder} />
-            </div>
-          </div>
-        </Section>
+        <Flex direction="row" wrap gap="xl" align="start">
+          <Box as="div" minWidth0>
+            <Heading level="h2" id="about-heading">
+              Passionate about creating impactful web experiences
+            </Heading>
+            <Text color="muted" size="md">
+              With over 5 years of experience in full-stack development, I
+              specialize in building scalable web applications using modern
+              technologies. My expertise includes React, Node.js, and cloud
+              architecture. I&apos;m passionate about creating elegant
+              solutions to complex problems and sharing knowledge with the
+              developer community.
+            </Text>
+            <Flex as="div" wrap gap="sm">
+              <Link
+                href="https://github.com"
+                variant="button"
+                external
+              >
+                GitHub
+              </Link>
+              <Link href="/cv.pdf" variant="button" download>
+                Download CV
+              </Link>
+            </Flex>
+          </Box>
+          <Image
+            src="/images/about.jpg"
+            alt="Portrait or visual representing the developer"
+            aspectRatio="square"
+            sizes="(max-width: 768px) 288px, 50vw"
+          />
+        </Flex>
+      </Section>
 
       {/* Experience */}
       <Section id="experience" ariaLabelledBy="experience-heading" divider>
@@ -187,30 +190,29 @@ export default function AboutPage() {
           <Text color="muted" size="sm" as="p">
             Showcasing some of my best projects and technical achievements
           </Text>
-          <ul className={styles.projectGrid}>
-            {projects.map((project, i) => (
-              <li key={i}>
-                <ContentCard
-                  title={project.title}
-                  description={project.description}
-                  tags={project.tags}
-                  showMediaPlaceholder
-                  actions={[
-                    {
-                      label: "Live Demo",
-                      href: project.liveUrl,
-                      external: project.liveUrl.startsWith("http"),
-                    },
-                    {
-                      label: "View Code",
-                      href: project.githubUrl,
-                      external: project.githubUrl.startsWith("http"),
-                    },
-                  ]}
-                />
-              </li>
+          <ContentCardList>
+            {projects.map((project) => (
+              <ContentCard
+                key={project.title}
+                title={project.title}
+                description={project.description}
+                tags={project.tags}
+                showMediaPlaceholder
+                actions={[
+                  {
+                    label: "Live Demo",
+                    href: project.liveUrl,
+                    external: project.liveUrl.startsWith("http"),
+                  },
+                  {
+                    label: "View Code",
+                    href: project.githubUrl,
+                    external: project.githubUrl.startsWith("http"),
+                  },
+                ]}
+              />
             ))}
-          </ul>
+          </ContentCardList>
         </Section>
     </PageLayout>
   );

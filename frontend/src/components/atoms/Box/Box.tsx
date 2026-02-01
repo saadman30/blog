@@ -10,6 +10,8 @@ export interface BoxProps {
   children: ReactNode;
   /** Max-width variant. "full" = no constraint. Default: "full". */
   maxWidth?: BoxMaxWidth;
+  /** Min-width 0 for grid/flex children so they can shrink. Default: false. */
+  minWidth0?: boolean;
   /** Element to render as (e.g. "div", "article", "aside"). Default: "div". */
   as?: ElementType;
 }
@@ -17,6 +19,7 @@ export interface BoxProps {
 const Box = ({
   children,
   maxWidth = "full",
+  minWidth0 = false,
   as: Component = "div",
   ...rest
 }: BoxProps & Omit<HTMLAttributes<HTMLElement>, keyof BoxProps | "className">) => {
@@ -25,7 +28,11 @@ const Box = ({
       ? undefined
       : (styles[`root--${maxWidth}` as keyof typeof styles] as string);
 
-  const classNames = clsx(styles.root, maxWidthClass);
+  const classNames = clsx(
+    styles.root,
+    maxWidthClass,
+    minWidth0 && styles.rootMinWidth0
+  );
 
   return <Component className={classNames} {...rest}>{children}</Component>;
 };

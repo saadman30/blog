@@ -1,0 +1,47 @@
+@use "../../../styles/variables" as *;
+
+.wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.wrapperFill {
+  width: 100%;
+  height: 100%;
+}
+
+.wrapperSquare {
+  aspect-ratio: 1;
+}
+
+.wrapper16x9 {
+  aspect-ratio: 16 / 9;
+}
+
+.radiusDefault {
+  border-radius: var(--radius);
+}
+
+.radiusNone {
+  border-radius: 0;
+}
+
+.image {
+  display: block;
+}
+
+.objectCover {
+  object-fit: cover;
+}
+
+.objectContain {
+  object-fit: contain;
+}
+
+.objectFill {
+  object-fit: fill;
+}
+
+.objectNone {
+  object-fit: none;
+}
