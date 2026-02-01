@@ -12,7 +12,7 @@ const meta = {
   argTypes: {
     aspectRatio: {
       control: "select",
-      options: ["square", "16/9", "auto"],
+      options: ["square", "16/9", "16/10", "auto"],
     },
     radius: {
       control: "select",
@@ -81,4 +81,16 @@ export const Intrinsic: Story = {
     height: 150,
     radius: "default",
   },
+};
+
+export const PlaceholderOnly: Story = {
+  args: {
+    showPlaceholder: true,
+    aspectRatio: "16/10",
+  },
+  render: (args) => (
+    <div style={{ width: 320 }}>
+      <Image {...args} />
+    </div>
+  ),
 };

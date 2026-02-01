@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import Card from "@/components/atoms/Card";
 import Heading from "@/components/atoms/Heading";
+import Image from "@/components/atoms/Image";
 import Link from "@/components/atoms/Link";
 import Tag from "@/components/atoms/Tag";
 import Text from "@/components/atoms/Text";
@@ -44,7 +45,7 @@ const ContentCard = ({
     <Card as="article">
       {hasMedia && (
         <div className={styles.media} aria-hidden={media == null}>
-          {media ?? <div className={styles.mediaPlaceholder} />}
+          {media ?? <Image showPlaceholder aspectRatio="16/10" />}
         </div>
       )}
       <div className={styles.body}>

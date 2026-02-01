@@ -18,6 +18,10 @@
   aspect-ratio: 16 / 9;
 }
 
+.wrapper16x10 {
+  aspect-ratio: 16 / 10;
+}
+
 .radiusDefault {
   border-radius: var(--radius);
 }
@@ -44,4 +48,16 @@
 
 .objectNone {
   object-fit: none;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--text) 8%, var(--bg)) 0%,
+    color-mix(in srgb, var(--text) 4%, var(--bg)) 100%
+  );
+  border: none;
+  border-radius: 0;
 }

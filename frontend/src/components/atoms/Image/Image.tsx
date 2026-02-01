@@ -6,7 +6,7 @@ import { clsx } from "clsx";
 import styles from "./Image.module.scss";
 
 /** Aspect ratio of the image wrapper when using fill. "auto" = no constraint (parent sizes). */
-export type ImageAspectRatio = "square" | "16/9" | "auto";
+export type ImageAspectRatio = "square" | "16/9" | "16/10" | "auto";
 
 /** Border radius variant. */
 export type ImageRadius = "default" | "none";
@@ -15,11 +15,11 @@ export type ImageRadius = "default" | "none";
 export type ImageObjectFit = "cover" | "contain" | "fill" | "none";
 
 export interface ImageProps
-  extends Omit<NextImageProps, "className" | "style"> {
-  /** Required alt text for accessibility. */
-  alt: string;
-  /** Required image source (path, static import, or URL). */
-  src: NextImageProps["src"];
+  extends Omit<NextImageProps, "className" | "style" | "src" | "alt"> {
+  /** Alt text for accessibility. Omit or use "" when showPlaceholder is true. */
+  alt?: string;
+  /** Image source (path, static import, or URL). Omit when showPlaceholder is true. */
+  src?: NextImageProps["src"];
   /**
    * When true, image fills the wrapper; use with aspectRatio for responsive layout.
    * When false, width and height are required.
@@ -41,13 +41,15 @@ export interface ImageProps
   placeholder?: NextImageProps["placeholder"];
   /** Blur data URL when placeholder="blur". */
   blurDataURL?: string;
+  /** When true and src is omitted, shows an empty-state placeholder (e.g. for cards). */
+  showPlaceholder?: boolean;
 }
 
 const Image = React.forwardRef<HTMLDivElement, ImageProps>(
   (
     {
       src,
-      alt,
+      alt = "",
       fill = true,
       aspectRatio = "auto",
       radius = "default",
@@ -57,6 +59,7 @@ const Image = React.forwardRef<HTMLDivElement, ImageProps>(
       sizes,
       placeholder,
       blurDataURL,
+      showPlaceholder = false,
       width,
       height,
       ...rest
@@ -68,7 +71,9 @@ const Image = React.forwardRef<HTMLDivElement, ImageProps>(
         ? styles.wrapperSquare
         : aspectRatio === "16/9"
           ? styles.wrapper16x9
-          : undefined;
+          : aspectRatio === "16/10"
+            ? styles.wrapper16x10
+            : undefined;
 
     const radiusClass =
       radius === "default" ? styles.radiusDefault : styles.radiusNone;
@@ -91,8 +96,18 @@ const Image = React.forwardRef<HTMLDivElement, ImageProps>(
 
     const imageClassName = clsx(styles.image, objectFitClass);
 
+    const usePlaceholderOnly = showPlaceholder && src == null;
+
+    if (usePlaceholderOnly) {
+      return (
+        <div ref={ref} className={wrapperClassName} aria-hidden>
+          <div className={styles.placeholder} />
+        </div>
+      );
+    }
+
     const imageProps = {
-      src,
+      src: src!,
       alt,
       ...(fill
         ? { fill: true as const, sizes: sizes ?? "100vw" }

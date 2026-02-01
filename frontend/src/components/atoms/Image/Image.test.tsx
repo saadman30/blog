@@ -41,4 +41,15 @@ describe("Image", () => {
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper.className).toMatch(/radiusDefault/);
   });
+
+  it("renders placeholder when showPlaceholder is true and src is omitted", () => {
+    const { container } = render(
+      <Image showPlaceholder aspectRatio="16/10" />
+    );
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toBeInTheDocument();
+    expect(wrapper.className).toMatch(/wrapper16x10/);
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(wrapper.querySelector('[class*="placeholder"]')).toBeInTheDocument();
+  });
 });
