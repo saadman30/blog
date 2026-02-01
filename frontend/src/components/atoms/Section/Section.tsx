@@ -17,6 +17,8 @@ export interface SectionProps {
   ariaLabelledBy?: string;
   /** Spacing variant: padding (and margin) around the section. For layout use Flex inside; for gap use Flex or Spacing. */
   spacing?: SectionSpacing;
+  /** When true, adds top border and larger block padding (for separated content blocks). Ignores spacing when set. */
+  divider?: boolean;
 }
 
 const Section = ({
@@ -26,9 +28,11 @@ const Section = ({
   ariaLabel,
   ariaLabelledBy,
   spacing = "md",
+  divider = false,
 }: SectionProps) => {
-  const spacingClass =
-    spacing === "none"
+  const spacingClass = divider
+    ? styles.divider
+    : spacing === "none"
       ? styles.spacingNone
       : spacing === "sm"
         ? styles.spacingSm

@@ -3,14 +3,30 @@ import styles from "./PostTag.module.scss";
 
 interface Props {
   label: string;
+  /** Filter (clickable) or static (display-only). Default: "filter" */
+  variant?: "filter" | "static";
   active?: boolean;
   onClick?: () => void;
 }
 
-const PostTag = ({ label, active, onClick }: Props) => {
-  const classes = [styles.tag, active ? styles.active : undefined]
+const PostTag = ({
+  label,
+  variant = "filter",
+  active,
+  onClick,
+}: Props) => {
+  const classes = [
+    styles.tag,
+    variant === "static" ? styles.static : undefined,
+    active ? styles.active : undefined,
+  ]
     .filter(Boolean)
     .join(" ");
+
+  if (variant === "static") {
+    return <span className={classes}>{label}</span>;
+  }
+
   return (
     <span className={classes}>
       <Button

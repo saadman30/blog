@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
-
 import type { Post } from "@/types";
 
-import styles from "./PostCard.module.scss";
 import { estimateReadingMinutes } from "@/lib/readingTime";
+import styles from "./PostCard.module.scss";
+import Link from "@/components/atoms/Link";
 import Text from "@/components/atoms/Text";
 import Button from "@/components/atoms/Button";
 import Card from "@/components/atoms/Card";
@@ -54,7 +53,7 @@ const PostCard = ({ post, onTagClick }: Props) => {
         </Button>
       </Flex>
       <Flex justify="between" align="start" gap="md">
-        <Link href={`/blog/${post.slug}`} className={styles.title}>
+        <Link href={`/blog/${post.slug}`} variant="cardTitle">
           {post.title}
         </Link>
       </Flex>

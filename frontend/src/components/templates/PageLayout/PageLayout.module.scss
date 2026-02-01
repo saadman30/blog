@@ -2,15 +2,15 @@
 
 .root {
   margin: 0 auto;
-  padding: $space-12 $space-6 4rem;
+  padding: $space-12 $space-6 $space-16;
   display: grid;
   gap: $space-8;
 }
 
 .narrow {
-  max-width: 960px;
+  max-width: $content-max-width;
 }
 
 .wide {
-  max-width: 72rem;
+  max-width: $prose-max-width;
 }

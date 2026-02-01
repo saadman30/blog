@@ -8,9 +8,9 @@
 .input {
   width: 100%;
   border-radius: $radius-pill;
-  border: 1px solid var(--border-subtle);
+  border: $border-width-thin solid var(--border-subtle);
   padding: $space-2 $space-3;
-  padding-left: 2.1rem;
+  padding-left: $input-icon-offset;
   background-color: var(--bg-elevated);
   color: var(--text);
   font-size: $font-size-sm;

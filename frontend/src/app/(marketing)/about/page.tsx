@@ -1,11 +1,26 @@
-import Link from "next/link";
-
-import Text from "@/components/atoms/Text";
+import PageLayout from "@/components/templates/PageLayout";
+import Link from "@/components/atoms/Link";
+import Box from "@/components/atoms/Box";
+import Flex from "@/components/atoms/Flex";
 import Heading from "@/components/atoms/Heading";
 import Section from "@/components/atoms/Section";
-import styles from "@/styles/home.module.scss";
+import Text from "@/components/atoms/Text";
+import ContentCard from "@/components/organisms/ContentCard";
+import ExperienceTimeline, {
+  type ExperienceItem,
+} from "@/components/organisms/ExperienceTimeline";
 
-const experience = [
+import styles from "./about.module.scss";
+
+interface ProjectItem {
+  title: string;
+  description: string;
+  tags: string[];
+  liveUrl: string;
+  githubUrl: string;
+}
+
+const experience: ExperienceItem[] = [
   {
     company: "TechCorp Solutions",
     role: "Senior Full Stack Developer",
@@ -32,7 +47,7 @@ const experience = [
   },
 ];
 
-const projects = [
+const projects: ProjectItem[] = [
   {
     title: "E-Commerce Platform",
     description:
@@ -75,202 +90,128 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <main className={styles.home}>
+    <PageLayout variant="wide">
       {/* Hero */}
-      <div className={styles.hero}>
-        <Section id="hero">
-          <span className={styles.role}>Fullstack Web Developer</span>
-          <div className={styles.headline}>
-            <Heading level="h1">
-              Building Scalable &amp; Engaging Web Experiences
-            </Heading>
-          </div>
-        <p className={styles.intro}>
-          <Text as="span" size="lg" color="muted" weight="bold">
-            Hey there!{" "}
+      <Section id="hero" spacing="xl">
+        <Flex direction="column" gap="md">
+          <Text as="span" size="sm" color="muted" weight="medium" uppercase>
+            Fullstack Web Developer
           </Text>
-          <Text as="span" size="lg" color="muted">
-            I&apos;m a{" "}
-          </Text>
-          <Text as="span" size="lg" color="primary" weight="semibold">
-            Full Stack Developer
-          </Text>
-          <Text as="span" size="lg" color="muted">
-            {" "}
-            who loves building{" "}
-          </Text>
-          <Text as="span" size="lg" color="accent" italic>
-            cool and scalable
-          </Text>
-          <Text as="span" size="lg" color="muted">
-            {" "}
-            web experiences. From crafting beautiful frontends to powering robust
-            backends, I bring ideas to life with clean code and great design.{" "}
-          </Text>
-          <Text as="span" size="lg" color="default" weight="medium">
-            Let&apos;s create something amazing together!
-          </Text>
-        </p>
-        <Link href="#about" className={styles.cta}>
-          See What I Do
-        </Link>
-        </Section>
-      </div>
+          <Heading level="h1">
+            Building Scalable &amp; Engaging Web Experiences
+          </Heading>
+          <Box maxWidth="prose">
+            <Text as="p" size="lg" color="muted">
+              <Text as="span" size="lg" color="muted" weight="bold">
+                Hey there!
+              </Text>
+              <Text as="span" size="lg" color="muted">
+                I&apos;m a
+              </Text>
+              <Text as="span" size="lg" color="primary" weight="semibold">
+                Full Stack Developer
+              </Text>
+              <Text as="span" size="lg" color="muted">
+                
+                who loves building
+              </Text>
+              <Text as="span" size="lg" color="accent" italic>
+                cool and scalable
+              </Text>
+              <Text as="span" size="lg" color="muted">
+                web experiences. From crafting beautiful frontends to powering
+                robust backends, I bring ideas to life with clean code and great
+                design.
+              </Text>
+              <Text as="span" size="lg" color="default" weight="medium">
+                Let&apos;s create something amazing together!
+              </Text>
+            </Text>
+          </Box>
+          <Link href="#about" variant="cta">
+            See What I Do
+          </Link>
+        </Flex>
+      </Section>
 
       {/* About */}
-      <div className={styles.section}>
-        <Section id="about" ariaLabelledBy="about-heading">
-          <div className={styles.aboutGrid}>
+      <Section id="about" ariaLabelledBy="about-heading" divider>
+        <div className={styles.aboutGrid}>
             <div className={styles.aboutContent}>
-              <div className={styles.sectionTitle}>
-                <Heading level="h2" id="about-heading">
-                  Passionate about creating impactful web experiences
-                </Heading>
-              </div>
-              <div className={styles.sectionLead}>
-                <Text color="muted" size="md">
-              With over 5 years of experience in full-stack development, I
-              specialize in building scalable web applications using modern
-              technologies. My expertise includes React, Node.js, and cloud
-              architecture. I&apos;m passionate about creating elegant solutions
-              to complex problems and sharing knowledge with the developer
-              community.
-                </Text>
-              </div>
-              <div className={styles.aboutActions}>
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.linkButton}
-              >
-                GitHub
-              </a>
-              <a href="/cv.pdf" download className={styles.linkButton}>
-                Download CV
-              </a>
-              </div>
+              <Heading level="h2" id="about-heading">
+                Passionate about creating impactful web experiences
+              </Heading>
+              <Text color="muted" size="md">
+                With over 5 years of experience in full-stack development, I
+                specialize in building scalable web applications using modern
+                technologies. My expertise includes React, Node.js, and cloud
+                architecture. I&apos;m passionate about creating elegant
+                solutions to complex problems and sharing knowledge with the
+                developer community.
+              </Text>
+              <Flex as="div" wrap gap="sm">
+                <Link
+                  href="https://github.com"
+                  variant="button"
+                  external
+                >
+                  GitHub
+                </Link>
+                <Link href="/cv.pdf" variant="button" download>
+                  Download CV
+                </Link>
+              </Flex>
             </div>
             <div className={styles.aboutImage} aria-hidden>
               <div className={styles.imagePlaceholder} />
             </div>
           </div>
         </Section>
-      </div>
 
       {/* Experience */}
-      <div className={styles.section}>
-        <Section id="experience" ariaLabelledBy="experience-heading">
-          <div className={styles.sectionTitle}>
-            <Heading level="h2" id="experience-heading">
-              Professional Journey
-            </Heading>
-          </div>
-          <div className={styles.sectionSubtitle}>
-            <Text color="muted" size="sm">
-              A timeline of my professional growth and key achievements
-            </Text>
-          </div>
-          <ul className={styles.timeline}>
-            {experience.map((item, i) => (
-              <li key={i} className={styles.timelineItem}>
-                <div className={styles.timelineContent}>
-                  <div className={styles.timelineCompany}>
-                    <Text
-                      color="muted"
-                      size="xs"
-                      weight="semibold"
-                      as="p"
-                    >
-                      {item.company}
-                    </Text>
-                  </div>
-                  <div className={styles.timelineRole}>
-                    <Heading level="h3">{item.role}</Heading>
-                  </div>
-                  <div className={styles.timelinePeriod}>
-                    <Text color="muted" size="xs" as="p">
-                      {item.period}
-                    </Text>
-                  </div>
-                  <div className={styles.timelineDescription}>
-                    <Text color="muted" size="sm" as="p">
-                      {item.description}
-                    </Text>
-                  </div>
-                  <ul className={styles.tagList} role="list">
-                    {item.tags.map((tag) => (
-                      <li key={tag} className={styles.tag}>
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
-            ))}
-          </ul>
+      <Section id="experience" ariaLabelledBy="experience-heading" divider>
+          <Heading level="h2" id="experience-heading">
+            Professional Journey
+          </Heading>
+          <Text color="muted" size="sm" as="p">
+            A timeline of my professional growth and key achievements
+          </Text>
+          <ExperienceTimeline items={experience} />
         </Section>
-      </div>
 
       {/* Projects */}
-      <div className={styles.section}>
-        <Section id="projects" ariaLabelledBy="projects-heading">
-          <div className={styles.sectionTitle}>
-            <Heading level="h2" id="projects-heading">
-              Featured Work
-            </Heading>
-          </div>
-          <div className={styles.sectionSubtitle}>
-            <Text color="muted" size="sm">
-              Showcasing some of my best projects and technical achievements
-            </Text>
-          </div>
+      <Section id="projects" ariaLabelledBy="projects-heading" divider>
+          <Heading level="h2" id="projects-heading">
+            Featured Work
+          </Heading>
+          <Text color="muted" size="sm" as="p">
+            Showcasing some of my best projects and technical achievements
+          </Text>
           <ul className={styles.projectGrid}>
             {projects.map((project, i) => (
-              <li key={i} className={styles.projectCard}>
-                <div className={styles.projectImage} aria-hidden>
-                  <div className={styles.imagePlaceholder} />
-                </div>
-                <div className={styles.projectBody}>
-                  <div className={styles.projectTitle}>
-                    <Heading level="h3">{project.title}</Heading>
-                  </div>
-                  <div className={styles.projectDescription}>
-                    <Text color="muted" size="sm" as="p">
-                      {project.description}
-                    </Text>
-                  </div>
-                  <ul className={styles.tagList} role="list">
-                    {project.tags.map((tag) => (
-                      <li key={tag} className={styles.tag}>
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className={styles.projectActions}>
-                    <a
-                      href={project.liveUrl}
-                      className={styles.projectLink}
-                      target={project.liveUrl.startsWith("http") ? "_blank" : undefined}
-                      rel={project.liveUrl.startsWith("http") ? "noopener noreferrer" : undefined}
-                    >
-                      Live Demo
-                    </a>
-                    <a
-                      href={project.githubUrl}
-                      className={styles.projectLink}
-                      target={project.githubUrl.startsWith("http") ? "_blank" : undefined}
-                      rel={project.githubUrl.startsWith("http") ? "noopener noreferrer" : undefined}
-                    >
-                      View Code
-                    </a>
-                  </div>
-                </div>
+              <li key={i}>
+                <ContentCard
+                  title={project.title}
+                  description={project.description}
+                  tags={project.tags}
+                  showMediaPlaceholder
+                  actions={[
+                    {
+                      label: "Live Demo",
+                      href: project.liveUrl,
+                      external: project.liveUrl.startsWith("http"),
+                    },
+                    {
+                      label: "View Code",
+                      href: project.githubUrl,
+                      external: project.githubUrl.startsWith("http"),
+                    },
+                  ]}
+                />
               </li>
             ))}
           </ul>
         </Section>
-      </div>
-    </main>
+    </PageLayout>
   );
 }

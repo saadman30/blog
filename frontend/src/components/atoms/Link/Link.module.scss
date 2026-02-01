@@ -1,0 +1,102 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as m;
+
+.root {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+// Brand — header/logo (uppercase, bold)
+.brand {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: $font-size-sm;
+  color: inherit;
+
+  &:hover {
+    color: var(--text-muted);
+  }
+}
+
+// Nav — navigation link (muted, hover to text)
+.nav {
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: var(--text-muted);
+  @include m.subtle-ease;
+
+  &:hover {
+    color: var(--text);
+  }
+}
+
+// CTA — primary button-style link (filled)
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: $space-3 $space-5;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  border-radius: var(--radius);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  transition: opacity 150ms ease, transform 150ms ease;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY($translate-hover);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Button — outline/secondary button-style link
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-2 $space-4;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  border-radius: var(--radius);
+  border: $border-width-thin solid var(--border-subtle);
+  background-color: var(--bg-elevated);
+  color: var(--text);
+  transition: background-color 150ms ease, border-color 150ms ease;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--text) 6%, var(--bg-elevated));
+    border-color: color-mix(in srgb, var(--text) 12%, var(--border-subtle));
+  }
+}
+
+// Inline — text link (primary color, underline on hover)
+.inline {
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: var(--primary);
+  transition: opacity 150ms ease, text-decoration 150ms ease;
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+  }
+}
+
+// Card title — post/card title link (no underline by default)
+.cardTitle {
+  font-size: inherit;
+  font-weight: 600;
+  color: inherit;
+  transition: color 150ms ease;
+
+  &:hover {
+    color: var(--text-muted);
+  }
+}

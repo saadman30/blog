@@ -28,3 +28,9 @@
   padding-block: $space-8;
   padding-inline: 0;
 }
+
+.divider {
+  padding-block: $space-16 $space-12;
+  padding-inline: 0;
+  border-top: $border-width-thin solid var(--border-subtle);
+}

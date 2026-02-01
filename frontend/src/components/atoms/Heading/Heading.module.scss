@@ -10,11 +10,11 @@
 }
 
 .h2 {
-  font-size: clamp($font-size-lg, 3vw, 2.2rem);
+  font-size: clamp($font-size-lg, 3vw, $font-size-2xl);
   line-height: 1.1;
 }
 
 .h3 {
-  font-size: $font-size-md;
+  font-size: $font-size-lg;
   line-height: 1.3;
 }

@@ -1,0 +1,85 @@
+@use "@/styles/variables" as *;
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+}
+
+.timelineItem {
+  position: relative;
+  padding-left: $space-6;
+  border-left: $border-width-medium solid var(--border-subtle);
+  margin-left: $space-1;
+}
+
+.timelineItem::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: $space-2;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  border: $border-width-medium solid var(--bg);
+  box-shadow: 0 0 0 $border-width-thin var(--border-subtle);
+}
+
+.timelineCompany {
+  p {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+    margin-bottom: $space-1;
+  }
+}
+
+.timelineRole {
+  h3 {
+    font-size: $font-size-md;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: $space-1;
+  }
+}
+
+.timelinePeriod {
+  p {
+    font-size: $font-size-xs;
+    color: var(--text-muted);
+    margin-bottom: $space-2;
+  }
+}
+
+.timelineDescription {
+  p {
+    font-size: $font-size-sm;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: $space-3;
+  }
+}
+
+.tagList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.tag {
+  font-size: $font-size-xs;
+  font-weight: 500;
+  padding: $space-1 $space-2;
+  border-radius: $radius-sm;
+  background-color: color-mix(in srgb, var(--text) 6%, var(--bg));
+  border: $border-width-thin solid var(--border-subtle);
+  color: var(--text-muted);
+}

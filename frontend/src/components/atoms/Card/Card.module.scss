@@ -2,8 +2,8 @@
 @use "../../../styles/mixins" as m;
 
 .root {
-  border-radius: 18px;
-  border: 1px solid var(--border-subtle);
+  border-radius: $radius-card;
+  border: $border-width-thin solid var(--border-subtle);
   padding: $space-4 $space-6;
   background-color: var(--bg-elevated);
   display: grid;
@@ -11,8 +11,8 @@
   @include m.subtle-ease;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+    transform: translateY($translate-hover-lg);
+    box-shadow: $shadow-hover-card;
     border-color: rgba(0, 0, 0, 0.12);
   }
 }

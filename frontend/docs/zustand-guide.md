@@ -128,7 +128,7 @@ export const SearchBar = ({ placeholder = "Search articles" }: Props) => {
 - **`const { query, setQuery, clear } = useBlogFiltersStore();`** — The component “subscribes” to `query`, `setQuery`, and `clear`. When `query` changes (via `set`), this component re-renders.
 - The search box is controlled by `query`; typing calls `setQuery`, which updates the store and thus the UI.
 
-Another component (e.g. `BlogIndex`) can use `tag` and `setTag` from the same store. All of them share the same `query` and `tag`.
+Another component (e.g. the blog page content) can use `tag` and `setTag` from the same store. All of them share the same `query` and `tag`.
 
 ---
 

@@ -1,8 +1,10 @@
+@use "../../../styles/variables" as *;
+
 .barRoot {
   position: fixed;
   inset-inline: 0;
   top: 0;
-  height: 2px;
+  height: $bar-height-progress;
   z-index: 20;
   pointer-events: none;
 }

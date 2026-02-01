@@ -1,5 +1,5 @@
 import { api } from "@/lib/api/client";
-import BlogIndexTemplate from "@/components/templates/BlogIndex";
+import BlogPageContent from "./(marketing)/blog/BlogPageContent";
 
 export const dynamic = "force-dynamic";
 
@@ -16,5 +16,5 @@ export default async function HomePage() {
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
 
-  return <BlogIndexTemplate posts={sorted} />;
+  return <BlogPageContent posts={sorted} />;
 }

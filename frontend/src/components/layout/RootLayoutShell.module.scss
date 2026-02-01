@@ -16,22 +16,9 @@
   justify-content: space-between;
   gap: $space-6;
   padding: $space-4 $space-6;
-  border-bottom: 1px solid var(--border-subtle);
-  backdrop-filter: blur(18px);
+  border-bottom: $border-width-thin solid var(--border-subtle);
+  backdrop-filter: blur($blur-md);
   background: color-mix(in srgb, var(--bg) 80%, transparent);
-}
-
-.brand {
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-size: $font-size-sm;
-  color: inherit;
-  text-decoration: none;
-
-  &:hover {
-    color: var(--text-muted);
-  }
 }
 
 .nav {
@@ -49,22 +36,10 @@
   gap: $space-6;
 }
 
-.navLink {
-  font-size: $font-size-sm;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-decoration: none;
-  @include m.subtle-ease;
-
-  &:hover {
-    color: var(--text);
-  }
-}
-
 .themeToggle {
   border-radius: $radius-pill;
-  border: 1px solid var(--border-subtle);
-  padding: 0.45rem $space-3;
+  border: $border-width-thin solid var(--border-subtle);
+  padding: $space-2 $space-3;
   background-color: var(--bg-elevated);
   color: var(--text);
   font-size: $font-size-sm;
@@ -74,8 +49,8 @@
   @include m.subtle-ease;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transform: translateY($translate-hover);
+    box-shadow: $shadow-hover;
   }
 }
 
@@ -85,7 +60,7 @@
 
 .footer {
   padding: $space-4 $space-6;
-  border-top: 1px solid var(--border-subtle);
+  border-top: $border-width-thin solid var(--border-subtle);
   font-size: $font-size-xs;
   color: var(--text-muted);
 }

@@ -10,6 +10,7 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     label: { control: "text" },
+    variant: { control: "radio", options: ["filter", "static"] },
     active: { control: "boolean" },
     onClick: { action: "clicked" },
   },
@@ -25,6 +26,10 @@ export const Default: Story = {
 
 export const Active: Story = {
   args: { label: "documentation", active: true },
+};
+
+export const Static: Story = {
+  args: { label: "read-only tag", variant: "static" },
 };
 
 export const Group: Story = {

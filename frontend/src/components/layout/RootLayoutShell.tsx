@@ -1,8 +1,8 @@
 "use client";
 
 import { ReactNode, useEffect } from "react";
-import Link from "next/link";
 
+import Link from "@/components/atoms/Link";
 import styles from "./RootLayoutShell.module.scss";
 import { useThemeStore, hydrateInitialTheme } from "@/store/themeStore";
 
@@ -25,14 +25,14 @@ const RootLayoutShell = ({ children }: Props) => {
   return (
     <div className={styles.shell}>
       <header className={styles.header} aria-label="Site header">
-        <Link href="/" className={styles.brand}>
+        <Link href="/" variant="brand">
           Minimalist Studio
         </Link>
         <nav className={styles.nav} aria-label="Main navigation">
           <ul className={styles.navList}>
             {navLinks.map(({ href, label }) => (
               <li key={href}>
-                <Link href={href} className={styles.navLink}>
+                <Link href={href} variant="nav">
                   {label}
                 </Link>
               </li>

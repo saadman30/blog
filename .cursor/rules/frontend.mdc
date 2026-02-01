@@ -3,8 +3,12 @@
 # This file is the single source of truth for every AI-assisted code
 # generation in this project. Read it in full before writing anything.
 # ================================================================
-
-
+#
+# ⚠️ Do NOT add className to any component's props. Do NOT pass className
+#     when rendering shared components (Section, Heading, Flex, PageLayout,
+#     etc.). Use props for variations; use className only with this file's
+#     CSS module on DOM elements in this same file.
+#
 # ─────────────────────────────────────────────────────────────────
 # 1. PROJECT OVERVIEW & PHILOSOPHY
 # ─────────────────────────────────────────────────────────────────
@@ -29,6 +33,22 @@ Core principles that override everything else:
   7. No inline CSS: never use the style= prop. All styling lives in the
      component's *.module.scss file (or global tokens). This is non-negotiable.
 
+# ⚠️ CLASSNAME RULE — MANDATORY (AI: read before generating any component or page)
+# ─────────────────────────────────────────────────────────────────────────────
+# FORBIDDEN:
+#   • Adding className to any component's props interface (e.g. ButtonProps,
+#     SectionProps, PageLayoutProps). Do not generate props that include className.
+#   • Passing className when rendering a shared component. Never write:
+#     <Section className={styles.wrapper}>  ❌
+#     <Heading className={styles.title}>   ❌
+#     <PageLayout className={styles.page}> ❌
+#     <Flex className={styles.row}>        ❌
+# ALLOWED:
+#   • Using className only with THIS file's CSS module on DOM elements in the
+#     same file: <div className={styles.root}> or <span className={styles.label}>
+#     inside that component or page. The component/page owns its layout classes.
+# When you need a visual variation: add a prop (variant, size, etc.) and
+# implement it in the component's *.module.scss — never add or forward className.
 
 # ─────────────────────────────────────────────────────────────────
 # 2. DIRECTORY STRUCTURE
@@ -247,6 +267,10 @@ Rules:
 # Do NOT use inline CSS. The style= prop is forbidden. All layout, spacing,
 # colors, and typography belong in the component's *.module.scss (or global
 # tokens). This rule is mandatory.
+#
+# IMPORTANT: className is used ONLY to apply THIS file's styles to elements
+# in THIS file. Never add className to a component's props. Never pass
+# className when rendering a shared component (Section, Heading, Flex, etc.).
 
 # 5.2 Class Naming — Flat BEM inside the Module
 # ─────────────────────────────────────────────────
@@ -262,42 +286,40 @@ Rules:
 #   ✅  .root { ... }  .label { ... }  .root--large { ... }
 #   ❌  .root { .label { .icon { … } } }   // too deep
 
-# 5.3 Global Variables & Mixins
-# ──────────────────────────────
-# All design tokens live in src/styles/_variables.scss:
+# 5.3 Design Tokens — MANDATORY: Use @frontend/src/styles/_variables.scss
+# ─────────────────────────────────────────────────────────────────────────
+# All colors, margins, font sizes, and spacing (padding, margin, gap) MUST
+# come from frontend/src/styles/_variables.scss. Raw values (hex, px) and
+# rem are forbidden in component or page SCSS. Use px only via variables.
 #
-#   // Colors
-#   $color-primary:        #1a73e8;
-#   $color-primary-hover:  #1558b0;
-#   $color-surface:        #ffffff;
-#   $color-text:           #1f1f1f;
-#   $color-error:          #d32f2f;
+# Rules:
+#   • Colors: use $color-* variables or CSS custom properties (var(--…))
+#     that are defined from those variables in globals.scss. No #hex in
+#     *.module.scss or page SCSS.
+#   • Margin / padding / gap: use $space-* only (e.g. $space-2, $space-4).
+#     No raw px and no rem for spacing.
+#   • Font size: use $font-size-* only (all in px). Do not use rem.
+#   • Border width/radius: use $border-width-*, $radius-*.
+#   • Shadows: use $shadow-*. Layout widths: use $content-max-width,
+#     $prose-max-width, $grid-min-column, etc.
+#   • If a value you need is missing, add it to _variables.scss once;
+#     do not duplicate variables. Do not introduce raw values instead.
 #
-#   // Spacing (8 px base)
-#   $space-1: 4px;   $space-2: 8px;   $space-3: 12px;
-#   $space-4: 16px;  $space-5: 24px;  $space-6: 32px;
-#   $space-8: 48px;  $space-10: 64px;
-#
-#   // Typography
-#   $font-sans:  'Inter', sans-serif;
-#   $font-mono:  'JetBrains Mono', monospace;
-#   $text-xs: 0.75rem;  $text-sm: 0.875rem;  $text-base: 1rem;
-#   $text-lg: 1.125rem; $text-xl: 1.25rem;   $text-2xl: 1.5rem;
-#
-#   // Radii
-#   $radius-sm: 4px;  $radius-md: 8px;  $radius-lg: 12px;  $radius-full: 9999px;
-#
-#   // Shadows
-#   $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-#   $shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-#   $shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+# Single source of truth: frontend/src/styles/_variables.scss
+#   // Colors: $color-bg-light, $color-text-light, $color-accent, …
+#   // Spacing: $space-1 … $space-16 (from $space-unit)
+#   // Typography: $font-size-xs, $font-size-sm, $font-size-base, $font-size-md,
+#   //   $font-size-lg, $font-size-xl, $font-size-2xl, $font-size-3xl, $font-size-hero
+#   // Layout: $content-max-width, $prose-max-width, $grid-min-column, …
+#   // Borders: $border-width-thin, $radius-sm, $radius-card, $radius-pill, …
+#   // Shadows: $shadow-card, $shadow-hover, $shadow-hover-button, …
 #
 # Mixins live in src/styles/_mixins.scss:
 #
 #   @mixin respond-to($breakpoint) { … }   // sm | md | lg | xl
 #   @mixin visually-hidden { … }
 #   @mixin truncate($lines: 1) { … }
-#   @mixin focus-ring { … }               // consistent :focus-visible style
+#   @mixin focus-ring { … }               // uses variables for outline
 
 # 5.4 Component SCSS Template
 # ──────────────────────────────
@@ -350,7 +372,7 @@ Rules:
 #     @include respond-to(md) { flex-direction: row; }
 #   }
 #
-# Never use px for font sizes (use rem).  Use px only for borders and shadows.
+# Do not use rem. All font sizes and spacing use px via _variables.scss.
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -662,12 +684,17 @@ Rules:
 #
 # 10. Passing className or style from a parent: Forbidden. Components are
 #     self-sufficient; expose variant/size/layout via props and implement
-#     all styling in the component's own *.module.scss.
+#     all styling in the component's own *.module.scss. When generating code,
+#     never add className to a component's props interface and never write
+#     <ComponentName className={...}> — use props only.
 
 
 # ─────────────────────────────────────────────────────────────────
 # 13. QUICK-REFERENCE CHEAT SHEET
 # ─────────────────────────────────────────────────────────────────
+
+# Component props: NEVER include className. NEVER pass className to a
+# shared component (Section, Heading, Flex, PageLayout, etc.). Use props.
 
 # New Atom?
 #   mkdir -p src/components/atoms/my-thing

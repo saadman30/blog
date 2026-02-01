@@ -22,7 +22,7 @@ const collectTags = (posts: Post[]): string[] => {
   return Array.from(set).sort((a, b) => a.localeCompare(b));
 };
 
-const BlogIndexTemplate = ({ posts }: Props) => {
+export default function BlogPageContent({ posts }: Props) {
   const { query, tag, setTag } = useBlogFiltersStore();
   const tags = collectTags(posts);
 
@@ -82,7 +82,4 @@ const BlogIndexTemplate = ({ posts }: Props) => {
       </Section>
     </PageLayout>
   );
-};
-
-export default BlogIndexTemplate;
-
+}

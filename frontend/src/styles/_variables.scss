@@ -1,3 +1,4 @@
+// ─── Colors (use these only; no raw hex in component SCSS) ─────────────────
 $color-bg-light: #f8f8f8;
 $color-bg-dark: #050505;
 $color-text-light: #111111;
@@ -7,36 +8,73 @@ $color-accent: #ff4b4b;
 $color-primary: #111111;
 $color-primary-foreground: #ffffff;
 
+// ─── Typography ────────────────────────────────────────────────────────────
 $font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
   "Helvetica Neue", Arial, sans-serif;
 $font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
   Consolas, "Liberation Mono", "Courier New", monospace;
 
-// Font scale (semantic): derived from $font-size-base so one change scales all.
+// Font scale: xs → 3xl + hero. Use these only; px only (no rem).
 $font-size-base: 16px;
-$font-size-xs: $font-size-base * 0.75;   // 12px
-$font-size-sm: $font-size-base * 0.875;  // 14px
-$font-size-md: $font-size-base * 1.25;   // 20px
-$font-size-lg: $font-size-base * 1.5;    // 24px
-$font-size-xl: $font-size-base * 2;       // 32px
-$font-size-2xl: $font-size-base * 3;     // 48px
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 18px;
+$font-size-lg: 20px;
+$font-size-xl: 24px;
+$font-size-2xl: 32px;
+$font-size-3xl: 48px;
+$font-size-hero: clamp(40px, 5vw, 60px);
 
-// Spacing scale: use $space-unit * n. The number is the factor (e.g. $space-6 = 6 × 4px = 24px).
+// ─── Spacing (padding, margin, gap: use $space-* only; px only, no rem) ─────
 $space-unit: 4px;
 $space-1: $space-unit * 1;
 $space-2: $space-unit * 2;
 $space-3: $space-unit * 3;
 $space-4: $space-unit * 4;
+$space-5: $space-unit * 5;
 $space-6: $space-unit * 6;
+$space-7: $space-unit * 7;
 $space-8: $space-unit * 8;
+$space-10: $space-unit * 10;
 $space-12: $space-unit * 12;
+$space-16: $space-unit * 16;
+$space-20: $space-unit * 20;
+$space-24: $space-unit * 24;
 
+// ─── Layout (max-width, grid) ──────────────────────────────────────────────
+$content-max-width: 960px;
+$prose-max-width: 1152px;
+$prose-content: 672px;
+$layout-narrow: 65ch;
+$grid-min-column: 320px;
+$grid-min-column-sm: 300px;
+$image-max-width-sm: 288px;
+
+// ─── Borders & bar ─────────────────────────────────────────────────────────
+$border-width-thin: 1px;
+$border-width-medium: 2px;
+$bar-height-progress: 2px;
+
+// ─── Radii (no raw px for border-radius) ────────────────────────────────────
 $radius-sm: 4px;
 $radius-md: 999px;
 $radius-pill: 9999px;
+$radius-card: 18px;
 $radius-lg: 24px;
 $radius-xl: 32px;
 
+// ─── Shadows (no raw box-shadow values) ────────────────────────────────────
 $shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.08);
 $shadow-card: 0 4px 12px rgba(0, 0, 0, 0.06);
+$shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
+$shadow-hover-button: 0 10px 32px rgba(0, 0, 0, 0.16);
+$shadow-hover-card: 0 18px 45px rgba(0, 0, 0, 0.12);
+
+// ─── Effects ───────────────────────────────────────────────────────────────
+$blur-md: 18px;
+$translate-hover: -1px;
+$translate-hover-lg: -2px;
+$input-icon-offset: 34px;
+$outline-width: 2px;
+$outline-offset: 3px;
 

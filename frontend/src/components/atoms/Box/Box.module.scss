@@ -1,0 +1,25 @@
+@use "../../../styles/variables" as *;
+
+.root {
+  // Base container; width constraint applied via modifiers
+}
+
+.root--prose {
+  max-width: $prose-content;
+}
+
+.root--content {
+  max-width: $content-max-width;
+}
+
+.root--wide {
+  max-width: $prose-max-width;
+}
+
+.root--narrow {
+  max-width: $layout-narrow;
+}
+
+.root--full {
+  // No max-width
+}

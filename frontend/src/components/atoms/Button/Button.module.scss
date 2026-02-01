@@ -7,7 +7,7 @@
   justify-content: center;
   gap: $space-2;
   border-radius: $radius-pill;
-  border: 1px solid var(--border-subtle);
+  border: $border-width-thin solid var(--border-subtle);
   padding: $space-2 $space-3;
   background-color: var(--bg-elevated);
   color: var(--text);
@@ -18,8 +18,8 @@
   @include m.subtle-ease;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.16);
+    transform: translateY($translate-hover);
+    box-shadow: $shadow-hover-button;
   }
 
   &:active {
@@ -37,7 +37,7 @@
 
 .primary {
   background-color: var(--accent);
-  color: #ffffff;
+  color: $color-primary-foreground;
   border-color: var(--accent);
 }
 

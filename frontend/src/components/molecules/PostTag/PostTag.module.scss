@@ -3,14 +3,14 @@
 .tag {
   display: inline-block;
   border-radius: $radius-pill;
-  border: 1px solid var(--border-subtle);
-  font-size: 0.7rem;
+  border: $border-width-thin solid var(--border-subtle);
+  font-size: $font-size-xs;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-muted);
 
   :global(button) {
-    padding: 0.18rem $space-2;
+    padding: $space-1 $space-2;
     border: none;
     border-radius: $radius-pill;
     font-size: inherit;
@@ -25,6 +25,10 @@
     transform: none;
     box-shadow: none;
   }
+}
+
+.static {
+  padding: $space-1 $space-2;
 }
 
 .active {
