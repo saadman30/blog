@@ -1,6 +1,9 @@
 @use "../../../styles/variables" as *;
 
-.tagsRow {
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
   gap: $space-2;

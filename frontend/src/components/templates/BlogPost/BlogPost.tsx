@@ -2,7 +2,6 @@
 
 import type { Post } from "@/types";
 
-import styles from "./BlogPost.module.scss";
 import { estimateReadingMinutes } from "@/lib/readingTime";
 import { useBookmarksStore } from "@/store/bookmarksStore";
 import { Bookmark, BookmarkCheck } from "lucide-react";
@@ -11,7 +10,8 @@ import Heading from "@/components/atoms/Heading";
 import Section from "@/components/atoms/Section";
 import Flex from "@/components/atoms/Flex";
 import Button from "@/components/atoms/Button";
-import PostTag from "@/components/molecules/PostTag";
+import Tag from "@/components/atoms/Tag";
+import TagsList from "@/components/molecules/TagsList";
 import ScrollProgressBar from "@/components/organisms/ScrollProgress";
 import PageLayout from "@/components/templates/PageLayout";
 
@@ -61,11 +61,11 @@ const BlogPostTemplate = ({ post }: Props) => {
                 </Button>
               </Flex>
               {post.tags.length ? (
-                <div className={styles.tagsRow}>
+                <TagsList>
                   {post.tags.map((tag) => (
-                    <PostTag key={tag} label={tag} />
+                    <Tag key={tag} label={tag} variant="static" />
                   ))}
-                </div>
+                </TagsList>
               ) : null}
             </Flex>
             <Flex direction="column" gap="md">

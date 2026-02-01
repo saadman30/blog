@@ -2,33 +2,25 @@
 
 .tag {
   display: inline-block;
+  padding: $space-1 $space-2;
   border-radius: $radius-pill;
   border: $border-width-thin solid var(--border-subtle);
   font-size: $font-size-xs;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-muted);
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
 
-  :global(button) {
-    padding: $space-1 $space-2;
-    border: none;
-    border-radius: $radius-pill;
-    font-size: inherit;
-    letter-spacing: inherit;
-    text-transform: inherit;
-    color: inherit;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  :global(button:hover) {
+  &:hover {
     transform: none;
     box-shadow: none;
   }
 }
 
 .static {
-  padding: $space-1 $space-2;
+  cursor: default;
 }
 
 .active {

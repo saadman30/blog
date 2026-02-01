@@ -3,8 +3,9 @@ import type { ReactNode } from "react";
 import Card from "@/components/atoms/Card";
 import Heading from "@/components/atoms/Heading";
 import Link from "@/components/atoms/Link";
-import PostTag from "@/components/molecules/PostTag";
+import Tag from "@/components/atoms/Tag";
 import Text from "@/components/atoms/Text";
+import TagsList from "@/components/molecules/TagsList";
 
 import styles from "./ContentCard.module.scss";
 
@@ -54,13 +55,13 @@ const ContentCard = ({
           </Text>
         </div>
         {tags.length > 0 && (
-          <ul className={styles.tagList} role="list">
-            {tags.map((tag) => (
-              <li key={tag}>
-                <PostTag label={tag} variant="static" />
-              </li>
-            ))}
-          </ul>
+          <div className={styles.tagList}>
+            <TagsList>
+              {tags.map((tag) => (
+                <Tag key={tag} label={tag} variant="static" />
+              ))}
+            </TagsList>
+          </div>
         )}
         {actions.length > 0 && (
           <div className={styles.actions}>

@@ -7,7 +7,8 @@ import Heading from "@/components/atoms/Heading";
 import Flex from "@/components/atoms/Flex";
 import Section from "@/components/atoms/Section";
 import SearchBar from "@/components/molecules/SearchBar";
-import PostTag from "@/components/molecules/PostTag";
+import Tag from "@/components/atoms/Tag";
+import TagsList from "@/components/molecules/TagsList";
 import PostCard from "@/components/organisms/PostCard";
 import PageLayout from "@/components/templates/PageLayout";
 import { useBlogFiltersStore } from "@/store/blogFiltersStore";
@@ -50,16 +51,18 @@ export default function BlogPageContent({ posts }: Props) {
             <Text as="span" color="muted" size="sm">{filtered.length} posts</Text>
           </Flex>
           {tags.length > 0 ? (
-            <Flex wrap gap="xs" aria-label="Filter by tag">
-              {tags.map((value) => (
-                <PostTag
-                  key={value}
-                  label={value}
-                  active={tag === value}
-                  onClick={() => setTag(tag === value ? null : value)}
-                />
-              ))}
-            </Flex>
+            <nav aria-label="Filter by tag">
+              <TagsList>
+                {tags.map((value) => (
+                  <Tag
+                    key={value}
+                    label={value}
+                    active={tag === value}
+                    onClick={() => setTag(tag === value ? null : value)}
+                  />
+                ))}
+              </TagsList>
+            </nav>
           ) : null}
         </Flex>
       </Section>

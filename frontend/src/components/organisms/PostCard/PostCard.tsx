@@ -9,9 +9,10 @@ import Text from "@/components/atoms/Text";
 import Button from "@/components/atoms/Button";
 import Card from "@/components/atoms/Card";
 import Flex from "@/components/atoms/Flex";
+import Tag from "@/components/atoms/Tag";
+import TagsList from "@/components/molecules/TagsList";
 import { useBookmarksStore } from "@/store/bookmarksStore";
 import { Bookmark, BookmarkCheck } from "lucide-react";
-import PostTag from "@/components/molecules/PostTag";
 
 interface Props {
   post: Post;
@@ -62,15 +63,16 @@ const PostCard = ({ post, onTagClick }: Props) => {
           {post.excerpt}
         </Text>
       </div>
-      <Flex wrap gap="xs">
+      <TagsList>
         {post.tags.map((tag) => (
-          <PostTag
+          <Tag
             key={tag}
             label={tag}
+            variant={onTagClick ? "filter" : "static"}
             onClick={onTagClick ? () => onTagClick(tag) : undefined}
           />
         ))}
-      </Flex>
+      </TagsList>
     </Card>
   );
 };
