@@ -1,0 +1,63 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-6;
+}
+
+.header {
+  max-width: $prose-content;
+}
+
+.uploadForm {
+  padding: $space-4;
+  border-radius: $radius-card;
+  border: $border-width-thin solid var(--border-subtle);
+  background-color: var(--bg-elevated);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-2;
+}
+
+.label {
+  display: block;
+}
+
+.fileInput,
+.textInput {
+  font-size: $font-size-sm;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($grid-min-column-sm, 1fr));
+  gap: $space-4;
+}
+
+.card {
+  padding: $space-3;
+  border-radius: $radius-card;
+  border: $border-width-thin solid var(--border-subtle);
+  background-color: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-2;
+}
+
+.thumbnailWrapper {
+  border-radius: $radius-sm;
+  overflow: hidden;
+  border: $border-width-thin solid var(--border-subtle);
+}
+
+.thumbnail {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+

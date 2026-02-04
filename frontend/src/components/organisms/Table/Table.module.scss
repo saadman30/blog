@@ -1,0 +1,32 @@
+@use "@/styles/variables" as *;
+
+.root {
+  border-radius: $radius-card;
+  border: $border-width-thin solid var(--border-subtle);
+  background-color: var(--bg-elevated);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: $space-3 $space-4;
+  text-align: left;
+}
+
+.table thead {
+  border-bottom: $border-width-thin solid var(--border-subtle);
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: color-mix(in srgb, var(--bg-elevated) 90%, var(--border-subtle) 10%);
+}
+
+.table tbody tr:hover {
+  background-color: color-mix(in srgb, var(--bg-elevated) 80%, var(--border-subtle) 20%);
+}
+

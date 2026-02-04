@@ -104,8 +104,11 @@ Core principles that override everything else:
 # └── middleware.ts                 # Next.js middleware (auth, i18n, etc.)
 
 Rules:
-  • Every component folder is kebab-case and contains exactly:
-      ComponentName.tsx | Component.module.scss | Component.test.tsx | index.ts
+  • Every component folder is kebab-case and contains at minimum:
+      ComponentName.tsx | Component.module.scss | Component.test.tsx | ComponentName.stories.tsx | index.ts
+  • For every new component you create, you MUST also create a matching Storybook story file
+    named ComponentName.stories.tsx in the same folder, using Storybook CSF3 with at least
+    a basic "default" story wired up with controls for the main props.
   • The index.ts barrel ONLY re-exports the default component.
       export { default } from './Button';
   • No index.ts barrel files anywhere else (no src/components/index.ts).
@@ -698,11 +701,11 @@ Rules:
 
 # New Atom?
 #   mkdir -p src/components/atoms/my-thing
-#   touch MyThing.tsx MyThing.module.scss MyThing.test.tsx index.ts
+#   touch MyThing.tsx MyThing.module.scss MyThing.test.tsx MyThing.stories.tsx index.ts
 
 # New Molecule?
 #   mkdir -p src/components/molecules/my-group
-#   touch MyGroup.tsx MyGroup.module.scss MyGroup.test.tsx index.ts
+#   touch MyGroup.tsx MyGroup.module.scss MyGroup.test.tsx MyGroup.stories.tsx index.ts
 
 # New Hook?
 #   touch src/hooks/useMyHook.ts src/hooks/useMyHook.test.ts

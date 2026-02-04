@@ -1,0 +1,36 @@
+import { api } from "@/lib/api/client";
+import type { PostEditorData } from "@/lib/types";
+import WriteScreen from "@/components/organisms/WriteScreen";
+
+interface Props {
+  searchParams?: {
+    postId?: string;
+  };
+}
+
+const resolveEditorData = async (
+  searchParams: Props["searchParams"]
+): Promise<PostEditorData> => {
+  const postIdParam = searchParams?.postId;
+
+  if (!postIdParam) {
+    return api.getPostEditorData("new");
+  }
+
+  const parsed = Number.parseInt(postIdParam, 10);
+
+  if (Number.isNaN(parsed)) {
+    return api.getPostEditorData("new");
+  }
+
+  return api.getPostEditorData(parsed);
+};
+
+const WritePage = async ({ searchParams }: Props) => {
+  const editorData = await resolveEditorData(searchParams);
+
+  return <WriteScreen initialData={editorData} />;
+};
+
+export default WritePage;
+

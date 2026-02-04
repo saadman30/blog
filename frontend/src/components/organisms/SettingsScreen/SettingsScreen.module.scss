@@ -1,0 +1,64 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-6;
+}
+
+.header {
+  max-width: $prose-content;
+}
+
+.section {
+  padding: $space-4;
+  border-radius: $radius-card;
+  border: $border-width-thin solid var(--border-subtle);
+  background-color: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-3;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-2;
+}
+
+.label {
+  display: block;
+}
+
+.input {
+  width: 100%;
+  border-radius: $radius-sm;
+  border: $border-width-thin solid var(--border-subtle);
+  padding: $space-3;
+  font-size: $font-size-sm;
+  background-color: var(--bg-elevated);
+}
+
+.textarea {
+  width: 100%;
+  border-radius: $radius-sm;
+  border: $border-width-thin solid var(--border-subtle);
+  padding: $space-3;
+  font-size: $font-size-sm;
+  background-color: var(--bg-elevated);
+  resize: vertical;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  column-gap: $space-2;
+  font-size: $font-size-sm;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
+

@@ -14,6 +14,10 @@ const meta = {
       control: "select",
       options: ["none", "sm", "md", "lg", "xl"],
     },
+    variant: {
+      control: "select",
+      options: ["default", "stacked"],
+    },
   },
 } satisfies Meta<typeof Section>;
 
@@ -25,6 +29,7 @@ export const Default: Story = {
   args: {
     children: "Section with semantic wrapper and spacing. Layout uses Flex inside; gap via Flex or Spacing.",
     spacing: "md",
+    variant: "default",
   },
 };
 

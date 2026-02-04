@@ -34,3 +34,10 @@
   padding-inline: 0;
   border-top: $border-width-thin solid var(--border-subtle);
 }
+
+// Layout variants
+.variantStacked {
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-6;
+}

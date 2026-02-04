@@ -1,0 +1,21 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.root {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  min-height: 100vh;
+  padding: $space-6 0;
+  column-gap: $space-8;
+}
+
+.nav {
+  border-right: $border-width-thin solid var(--border-subtle);
+  display: flex;
+  justify-content: center;
+}
+
+.main {
+  padding-right: $space-6;
+}
+

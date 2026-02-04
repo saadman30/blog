@@ -6,6 +6,9 @@ import styles from "./Section.module.scss";
 /** Spacing variant: controls padding (and optionally margin) around the section. Layout use Flex; gap use Flex or Spacing. */
 export type SectionSpacing = "none" | "sm" | "md" | "lg" | "xl";
 
+/** Visual/layout variants for Section. */
+export type SectionVariant = "default" | "stacked";
+
 export interface SectionProps {
   children: ReactNode;
   id?: string;
@@ -19,6 +22,8 @@ export interface SectionProps {
   spacing?: SectionSpacing;
   /** When true, adds top border and larger block padding (for separated content blocks). Ignores spacing when set. */
   divider?: boolean;
+  /** Layout/visual variant. "stacked" applies a vertical flex stack with a generous row gap. */
+  variant?: SectionVariant;
 }
 
 const Section = ({
@@ -29,6 +34,7 @@ const Section = ({
   ariaLabelledBy,
   spacing = "md",
   divider = false,
+  variant = "default",
 }: SectionProps) => {
   const spacingClass = divider
     ? styles.divider
@@ -42,7 +48,9 @@ const Section = ({
             ? styles.spacingXl
             : styles.spacingMd;
 
-  const composed = clsx(styles.root, spacingClass);
+  const variantClass = variant === "stacked" ? styles.variantStacked : undefined;
+
+  const composed = clsx(styles.root, spacingClass, variantClass);
 
   return (
     <Component
