@@ -1,10 +1,10 @@
 import { api } from "@/lib/api/client";
-import WriteScreen from "@/components/organisms/WriteScreen";
+import WritePageClient from "./write/WritePageClient";
 
 const AppRootPage = async () => {
   const editorData = await api.getPostEditorData("new");
 
-  return <WriteScreen initialData={editorData} />;
+  return <WritePageClient initialData={editorData} />;
 };
 
 export default AppRootPage;

@@ -1,20 +1,16 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
-
 import type { PostEditorData, PostStatus } from "@/lib/types";
+import Box from "@/components/atoms/Box";
 import Button from "@/components/atoms/Button";
 import Flex from "@/components/atoms/Flex";
 import Heading from "@/components/atoms/Heading";
+import Input from "@/components/atoms/Input/Input";
 import Link from "@/components/atoms/Link";
 import Section from "@/components/atoms/Section";
 import Text from "@/components/atoms/Text";
-
-import styles from "./WriteScreen.module.scss";
-
-export interface WriteScreenProps {
-  initialData: PostEditorData;
-}
+import Textarea from "@/components/atoms/Input/Textarea";
 
 type SavingState = "idle" | "saving" | "saved" | "error";
 
@@ -31,7 +27,6 @@ interface SaveDraftPayload {
 const AUTOSAVE_DEBOUNCE_MS = 800;
 
 async function saveDraft(payload: SaveDraftPayload) {
-  // Mutation endpoint is assumed to exist on the backend.
   await fetch("/admin/posts/save-draft", {
     method: "POST",
     headers: {
@@ -47,7 +42,7 @@ const formatTime = (date: Date) =>
     minute: "2-digit"
   });
 
-const WriteScreen = ({ initialData }: WriteScreenProps) => {
+const WritePageClient = ({ initialData }: { initialData: PostEditorData }) => {
   const [title, setTitle] = useState(
     initialData.seo.title || initialData.post?.title || ""
   );
@@ -87,8 +82,6 @@ const WriteScreen = ({ initialData }: WriteScreenProps) => {
         setSavingState("saved");
         setLastSavedAt(new Date());
       } catch (error) {
-        // For v1 we silently log and show a soft error state in the UI.
-        // The writer should always be able to continue typing.
         // eslint-disable-next-line no-console
         console.error("Failed to autosave draft", error);
         setSavingState("error");
@@ -139,76 +132,75 @@ const WriteScreen = ({ initialData }: WriteScreenProps) => {
 
   const handlePublishNow = () => {
     setStatus("published");
-    // Server-side publish action will live here in a follow-up.
   };
 
   const handleSchedule = () => {
     setStatus("scheduled");
-    // Opening a scheduler UI is intentionally deferred; v1 keeps this simple.
   };
 
   return (
     <Section as="section" spacing="lg" ariaLabel="Write new post">
-      <div className={styles.root}>
-        <div className={styles.editorColumn}>
-          <Flex justify="between" align="center" gap="sm" as="header">
-            <Heading level="h1">Write</Heading>
-            <Text
-              as="span"
-              size="xs"
-              color={
-                savingState === "error"
-                  ? "accent"
-                  : savingState === "saving"
-                    ? "primary"
-                    : "muted"
-              }
-              aria-live="polite"
-            >
-              {autosaveLabel}
-            </Text>
+      <Flex wrap gap="lg">
+        <Box minWidth0 maxWidth="full">
+          <Flex direction="column" gap="lg">
+            <Flex justify="between" align="center" gap="sm" as="header">
+              <Heading level="h1">Write</Heading>
+              <Text
+                as="span"
+                size="xs"
+                color={
+                  savingState === "error"
+                    ? "accent"
+                    : savingState === "saving"
+                      ? "primary"
+                      : "muted"
+                }
+                aria-live="polite"
+              >
+                {autosaveLabel}
+              </Text>
+            </Flex>
+
+            <Flex direction="column" gap="xs">
+              <label htmlFor="post-title">
+                <Text as="span" size="sm" color="muted">
+                  Title
+                </Text>
+              </label>
+              <Input
+                id="post-title"
+                type="text"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                placeholder="Start with a working title"
+              />
+            </Flex>
+
+            <Flex direction="column" gap="xs">
+              <label htmlFor="post-body">
+                <Text as="span" size="sm" color="muted">
+                  Markdown
+                </Text>
+              </label>
+              <Textarea
+                id="post-body"
+                value={body}
+                onChange={(event) => setBody(event.target.value)}
+                placeholder="Write in calm, focused Markdown. Preview stays in a separate tab."
+              />
+            </Flex>
           </Flex>
+        </Box>
 
-          <div className={styles.titleField}>
-            <label className={styles.label} htmlFor="post-title">
-              <Text as="span" size="sm" color="muted">
-                Title
-              </Text>
-            </label>
-            <input
-              id="post-title"
-              type="text"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              placeholder="Start with a working title"
-              className={styles.titleInput}
-            />
-          </div>
-
-          <div className={styles.bodyField}>
-            <label className={styles.label} htmlFor="post-body">
-              <Text as="span" size="sm" color="muted">
-                Markdown
-              </Text>
-            </label>
-            <textarea
-              id="post-body"
-              value={body}
-              onChange={(event) => setBody(event.target.value)}
-              placeholder="Write in calm, focused Markdown. Preview stays in a separate tab."
-              className={styles.bodyTextarea}
-            />
-          </div>
-        </div>
-
-        <aside className={styles.metaColumn} aria-label="Post controls and SEO">
-          <section className={styles.panel}>
+        <Box maxWidth="narrow">
+          <Flex direction="column" gap="md" as="aside" aria-label="Post controls and SEO">
+          <Section as="section" variant="card" spacing="none">
             <Heading level="h2">Status</Heading>
             <Text as="p" size="sm" color="muted">
               Keep this post as a draft until it feels ready. Publishing is a
               deliberate action.
             </Text>
-            <div className={styles.statusRow}>
+            <Flex justify="between" align="center" gap="sm">
               <Text as="span" size="sm">
                 Current status:
               </Text>
@@ -219,7 +211,7 @@ const WriteScreen = ({ initialData }: WriteScreenProps) => {
                     ? "Scheduled"
                     : "Published"}
               </Text>
-            </div>
+            </Flex>
             <Flex direction="column" gap="sm" as="div">
               <Button type="button" onClick={handlePublishNow}>
                 Publish now
@@ -228,58 +220,50 @@ const WriteScreen = ({ initialData }: WriteScreenProps) => {
                 Schedule…
               </Button>
             </Flex>
-          </section>
+          </Section>
 
-          <section className={styles.panel} aria-label="SEO checklist">
+          <Section as="section" variant="card" spacing="none" aria-label="SEO checklist">
             <Heading level="h2">SEO checklist</Heading>
-            <ul className={styles.checklist}>
-              <li>
-                <Text as="p" size="sm">
-                  <strong>Title:</strong> {titleCheck}
-                </Text>
-              </li>
-              <li>
-                <Text as="p" size="sm">
-                  <strong>Description:</strong> {descriptionCheck}
-                </Text>
-              </li>
-              <li>
-                <Text as="p" size="sm">
-                  <strong>Slug:</strong> {slugCheck}
-                </Text>
-              </li>
-            </ul>
-            <div className={styles.metaField}>
-              <label className={styles.label} htmlFor="post-description">
+            <Flex direction="column" gap="xs" as="div">
+              <Text as="p" size="sm">
+                <strong>Title:</strong> {titleCheck}
+              </Text>
+              <Text as="p" size="sm">
+                <strong>Description:</strong> {descriptionCheck}
+              </Text>
+              <Text as="p" size="sm">
+                <strong>Slug:</strong> {slugCheck}
+              </Text>
+            </Flex>
+            <Flex direction="column" gap="xs">
+              <label htmlFor="post-description">
                 <Text as="span" size="sm" color="muted">
                   Description
                 </Text>
               </label>
-              <textarea
+              <Textarea
                 id="post-description"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                className={styles.metaTextarea}
                 rows={3}
               />
-            </div>
-            <div className={styles.metaField}>
-              <label className={styles.label} htmlFor="post-slug">
+            </Flex>
+            <Flex direction="column" gap="xs">
+              <label htmlFor="post-slug">
                 <Text as="span" size="sm" color="muted">
                   Slug
                 </Text>
               </label>
-              <input
+              <Input
                 id="post-slug"
                 type="text"
                 value={slug}
                 onChange={(event) => setSlug(event.target.value)}
-                className={styles.metaInput}
               />
-            </div>
-          </section>
+            </Flex>
+          </Section>
 
-          <section className={styles.panel} aria-label="Preview actions">
+          <Section as="section" variant="card" spacing="none" aria-label="Preview actions">
             <Heading level="h2">Preview</Heading>
             <Text as="p" size="sm" color="muted">
               Open a focused, read-only preview in a separate tab. Writing and
@@ -292,12 +276,12 @@ const WriteScreen = ({ initialData }: WriteScreenProps) => {
             >
               Open preview
             </Link>
-          </section>
-        </aside>
-      </div>
+          </Section>
+          </Flex>
+        </Box>
+      </Flex>
     </Section>
   );
 };
 
-export default WriteScreen;
-
+export default WritePageClient;

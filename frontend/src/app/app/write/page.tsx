@@ -1,6 +1,6 @@
 import { api } from "@/lib/api/client";
 import type { PostEditorData } from "@/lib/types";
-import WriteScreen from "@/components/organisms/WriteScreen";
+import WritePageClient from "./WritePageClient";
 
 interface Props {
   searchParams?: {
@@ -27,10 +27,9 @@ const resolveEditorData = async (
 };
 
 const WritePage = async ({ searchParams }: Props) => {
-  const editorData = await resolveEditorData(searchParams);
+  const initialData = await resolveEditorData(searchParams);
 
-  return <WriteScreen initialData={editorData} />;
+  return <WritePageClient initialData={initialData} />;
 };
 
 export default WritePage;
-
