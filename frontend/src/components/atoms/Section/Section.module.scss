@@ -41,3 +41,13 @@
   flex-direction: column;
   row-gap: $space-6;
 }
+
+.variantCard {
+  padding: $space-4;
+  border-radius: $radius-card;
+  border: $border-width-thin solid var(--border-subtle);
+  background-color: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-3;
+}

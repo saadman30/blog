@@ -1,0 +1,11 @@
+@use "../../../styles/variables" as *;
+
+.textarea {
+  width: 100%;
+  border-radius: $radius-sm;
+  border: $border-width-thin solid var(--border-subtle);
+  padding: $space-3;
+  font-size: $font-size-sm;
+  background-color: var(--bg-elevated);
+  resize: vertical;
+}

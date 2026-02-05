@@ -7,7 +7,7 @@ import styles from "./Section.module.scss";
 export type SectionSpacing = "none" | "sm" | "md" | "lg" | "xl";
 
 /** Visual/layout variants for Section. */
-export type SectionVariant = "default" | "stacked";
+export type SectionVariant = "default" | "stacked" | "card";
 
 export interface SectionProps {
   children: ReactNode;
@@ -22,7 +22,7 @@ export interface SectionProps {
   spacing?: SectionSpacing;
   /** When true, adds top border and larger block padding (for separated content blocks). Ignores spacing when set. */
   divider?: boolean;
-  /** Layout/visual variant. "stacked" applies a vertical flex stack with a generous row gap. */
+  /** Layout/visual variant. "stacked" applies a vertical flex stack with a generous row gap. "card" applies card-like styling with border, background, and padding. */
   variant?: SectionVariant;
 }
 
@@ -48,7 +48,12 @@ const Section = ({
             ? styles.spacingXl
             : styles.spacingMd;
 
-  const variantClass = variant === "stacked" ? styles.variantStacked : undefined;
+  const variantClass =
+    variant === "stacked"
+      ? styles.variantStacked
+      : variant === "card"
+        ? styles.variantCard
+        : undefined;
 
   const composed = clsx(styles.root, spacingClass, variantClass);
 

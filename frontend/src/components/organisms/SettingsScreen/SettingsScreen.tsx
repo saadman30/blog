@@ -6,10 +6,10 @@ import type { AdminSettings } from "@/lib/types";
 import Button from "@/components/atoms/Button";
 import Flex from "@/components/atoms/Flex";
 import Heading from "@/components/atoms/Heading";
+import Input from "@/components/atoms/Input/Input";
+import Textarea from "@/components/atoms/Input/Textarea";
 import Section from "@/components/atoms/Section";
 import Text from "@/components/atoms/Text";
-
-import styles from "./SettingsScreen.module.scss";
 
 export interface SettingsScreenProps {
   settings: AdminSettings;
@@ -46,24 +46,24 @@ const SettingsScreen = ({ settings }: SettingsScreenProps) => {
 
   return (
     <Section as="section" spacing="lg" ariaLabel="Writer settings">
-      <form className={styles.root} onSubmit={handleSubmit}>
-        <header className={styles.header}>
+      <form onSubmit={handleSubmit}>
+        <Section as="header" spacing="none">
           <Heading level="h1">Settings</Heading>
           <Text as="p" size="sm" color="muted">
             Intentionally boring defaults. Set them once, then get back to
             writing.
           </Text>
-        </header>
+        </Section>
 
-        <section className={styles.section}>
+        <Section as="section" variant="card" spacing="none">
           <Heading level="h2">SEO defaults</Heading>
-          <div className={styles.fieldGroup}>
-            <label className={styles.label} htmlFor="seo-title-suffix">
+          <Flex direction="column" gap="xs">
+            <label  htmlFor="seo-title-suffix">
               <Text as="span" size="sm" color="muted">
                 Title suffix
               </Text>
             </label>
-            <input
+            <Input
               id="seo-title-suffix"
               type="text"
               value={seoDefaults.defaultTitleSuffix}
@@ -73,16 +73,15 @@ const SettingsScreen = ({ settings }: SettingsScreenProps) => {
                   defaultTitleSuffix: event.target.value
                 })
               }
-              className={styles.input}
             />
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.label} htmlFor="seo-description">
+          </Flex>
+          <Flex direction="column" gap="xs">
+            <label htmlFor="seo-description">
               <Text as="span" size="sm" color="muted">
                 Default description
               </Text>
             </label>
-            <textarea
+            <Textarea
               id="seo-description"
               value={seoDefaults.defaultDescription}
               onChange={(event) =>
@@ -91,17 +90,16 @@ const SettingsScreen = ({ settings }: SettingsScreenProps) => {
                   defaultDescription: event.target.value
                 })
               }
-              className={styles.textarea}
               rows={3}
             />
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.label} htmlFor="seo-og-image">
+          </Flex>
+          <Flex direction="column" gap="xs">
+            <label htmlFor="seo-og-image">
               <Text as="span" size="sm" color="muted">
                 Default social image URL
               </Text>
             </label>
-            <input
+            <Input
               id="seo-og-image"
               type="url"
               value={seoDefaults.defaultOgImageUrl}
@@ -111,48 +109,45 @@ const SettingsScreen = ({ settings }: SettingsScreenProps) => {
                   defaultOgImageUrl: event.target.value
                 })
               }
-              className={styles.input}
             />
-          </div>
-        </section>
+          </Flex>
+        </Section>
 
-        <section className={styles.section}>
+        <Section as="section" variant="card" spacing="none">
           <Heading level="h2">Author</Heading>
-          <div className={styles.fieldGroup}>
-            <label className={styles.label} htmlFor="author-name">
+          <Flex direction="column" gap="xs">
+            <label htmlFor="author-name">
               <Text as="span" size="sm" color="muted">
                 Name
               </Text>
             </label>
-            <input
+            <Input
               id="author-name"
               type="text"
               value={authorName}
               onChange={(event) => setAuthorName(event.target.value)}
-              className={styles.input}
             />
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.label} htmlFor="author-bio">
+          </Flex>
+          <Flex direction="column" gap="xs">
+            <label htmlFor="author-bio">
               <Text as="span" size="sm" color="muted">
                 Short bio
               </Text>
             </label>
-            <textarea
+            <Textarea
               id="author-bio"
               value={authorBio}
               onChange={(event) => setAuthorBio(event.target.value)}
-              className={styles.textarea}
               rows={3}
             />
-          </div>
-        </section>
+          </Flex>
+        </Section>
 
-        <section className={styles.section}>
+        <Section as="section" variant="card" spacing="none">
           <Heading level="h2">Integrations</Heading>
-          <div className={styles.checkboxRow}>
+          <Flex align="center" gap="xs">
             <label htmlFor="rss-enabled">
-              <input
+              <Input
                 id="rss-enabled"
                 type="checkbox"
                 checked={integrations.rssEnabled}
@@ -167,10 +162,10 @@ const SettingsScreen = ({ settings }: SettingsScreenProps) => {
                 Generate RSS feed
               </Text>
             </label>
-          </div>
-          <div className={styles.checkboxRow}>
+          </Flex>
+          <Flex align="center" gap="xs">
             <label htmlFor="email-digest-enabled">
-              <input
+              <Input
                 id="email-digest-enabled"
                 type="checkbox"
                 checked={integrations.emailDigestEnabled}
@@ -185,10 +180,10 @@ const SettingsScreen = ({ settings }: SettingsScreenProps) => {
                 Weekly email digest
               </Text>
             </label>
-          </div>
-        </section>
+          </Flex>
+        </Section>
 
-        <section className={styles.section}>
+        <Section as="section" variant="card" spacing="none">
           <Heading level="h2">Danger zone</Heading>
           <Text as="p" size="sm" color="muted">
             Export or remove content only when you&apos;re certain. This screen
@@ -199,13 +194,13 @@ const SettingsScreen = ({ settings }: SettingsScreenProps) => {
               Export all content
             </Button>
           </Flex>
-        </section>
+        </Section>
 
-        <footer className={styles.footer}>
+        <Flex as="footer" justify="end">
           <Button type="submit" disabled={isSaving}>
             {isSaving ? "Saving…" : "Save changes"}
           </Button>
-        </footer>
+        </Flex>
       </form>
     </Section>
   );
