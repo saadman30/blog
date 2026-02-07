@@ -141,7 +141,7 @@ const WritePageClient = ({ initialData }: { initialData: PostEditorData }) => {
   return (
     <Section as="section" spacing="lg" ariaLabel="Write new post">
       <Flex wrap gap="lg">
-        <Box minWidth0 maxWidth="full">
+        <Box maxWidth="wide" flex="grow">
           <Flex direction="column" gap="lg">
             <Flex justify="between" align="center" gap="sm" as="header">
               <Heading level="h1">Write</Heading>
@@ -187,12 +187,13 @@ const WritePageClient = ({ initialData }: { initialData: PostEditorData }) => {
                 value={body}
                 onChange={(event) => setBody(event.target.value)}
                 placeholder="Write in calm, focused Markdown. Preview stays in a separate tab."
+                rows={18}
               />
             </Flex>
           </Flex>
         </Box>
 
-        <Box maxWidth="narrow">
+        <Box maxWidth="narrow" flex="none">
           <Flex direction="column" gap="md" as="aside" aria-label="Post controls and SEO">
           <Section as="section" variant="card" spacing="none">
             <Heading level="h2">Status</Heading>

@@ -2,6 +2,7 @@
 
 .textarea {
   width: 100%;
+  min-height: 4.5rem;
   border-radius: $radius-sm;
   border: $border-width-thin solid var(--border-subtle);
   padding: $space-3;

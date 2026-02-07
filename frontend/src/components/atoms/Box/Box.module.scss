@@ -27,3 +27,12 @@
 .rootMinWidth0 {
   min-width: 0;
 }
+
+.root--flexGrow {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.root--flexNone {
+  flex: 0 0 auto;
+}
