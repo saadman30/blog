@@ -1,6 +1,5 @@
 import type {
   AdminSettings,
-  MediaItem,
   Post,
   PostAdminSummary,
   PostEditorData,
@@ -188,31 +187,6 @@ export const api = {
           label: "Write follow-up",
           href: "/app/write"
         }
-      }
-    ];
-  },
-
-  /**
-   * Admin-only: list media assets for the Media screen.
-   * Returns a small mock library for now.
-   */
-  async listMedia(): Promise<MediaItem[]> {
-    return [
-      {
-        id: "hero-1",
-        url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97",
-        alt: "Laptop on a desk in a calm workspace",
-        type: "image",
-        usageCount: 2,
-        createdAt: new Date("2025-01-10T10:00:00.000Z").toISOString()
-      },
-      {
-        id: "whiteboard-1",
-        url: "https://images.unsplash.com/photo-1553877522-43269d4ea984",
-        alt: "Whiteboard with product diagrams",
-        type: "image",
-        usageCount: 1,
-        createdAt: new Date("2025-02-01T12:00:00.000Z").toISOString()
       }
     ];
   },

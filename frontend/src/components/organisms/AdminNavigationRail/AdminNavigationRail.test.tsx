@@ -23,9 +23,6 @@ describe("AdminNavigationRail", () => {
       screen.getByRole("link", { name: /insights/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: /media/i })
-    ).toBeInTheDocument();
-    expect(
       screen.getByRole("link", { name: /settings/i })
     ).toBeInTheDocument();
   });

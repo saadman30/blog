@@ -76,18 +76,6 @@ export interface PostInsight {
   action: InsightAction;
 }
 
-export type MediaType = "image";
-
-/** Minimal media item used in the Media screen. */
-export interface MediaItem {
-  id: string;
-  url: string;
-  alt: string;
-  type: MediaType;
-  usageCount: number;
-  createdAt: string;
-}
-
 export interface SeoDefaults {
   defaultTitleSuffix: string;
   defaultDescription: string;

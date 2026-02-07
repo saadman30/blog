@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BarChart3, FileText, Image as ImageIcon, PenSquare, Settings } from 'lucide-react';
+import { BarChart3, FileText, PenSquare, Settings } from 'lucide-react';
 
 import styles from './AdminNavigationRail.module.scss';
 
@@ -29,11 +29,6 @@ const NAV_ITEMS: NavItem[] = [
     href: '/app/insights',
     label: 'Insights',
     icon: <BarChart3 aria-hidden />
-  },
-  {
-    href: '/app/media',
-    label: 'Media',
-    icon: <ImageIcon aria-hidden />
   },
   {
     href: '/app/settings',
