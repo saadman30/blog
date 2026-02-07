@@ -3,15 +3,13 @@ import type { PostEditorData } from "@/lib/types";
 import WritePageClient from "./WritePageClient";
 
 interface Props {
-  searchParams?: {
-    postId?: string;
-  };
+  searchParams?: Promise<{ postId?: string }>;
 }
 
 const resolveEditorData = async (
-  searchParams: Props["searchParams"]
+  params: { postId?: string } | undefined
 ): Promise<PostEditorData> => {
-  const postIdParam = searchParams?.postId;
+  const postIdParam = params?.postId;
 
   if (!postIdParam) {
     return api.getPostEditorData("new");
@@ -27,7 +25,8 @@ const resolveEditorData = async (
 };
 
 const WritePage = async ({ searchParams }: Props) => {
-  const initialData = await resolveEditorData(searchParams);
+  const params = await searchParams;
+  const initialData = await resolveEditorData(params);
 
   return <WritePageClient initialData={initialData} />;
 };
