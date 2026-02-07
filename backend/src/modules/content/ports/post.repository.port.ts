@@ -1,4 +1,5 @@
-import { PostStatus } from '@prisma/client';
+/** Matches Prisma schema enum PostStatus (avoids depending on generated client). */
+export type PostStatus = 'DRAFT' | 'SCHEDULED' | 'PUBLISHED';
 
 export interface PostEntity {
   id: number;

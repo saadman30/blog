@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { PostStatus } from '@prisma/client';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import {
   IPostRepository,
   PostEntity,
   PostCreateInput,
   PostUpdateInput,
+  PostStatus,
 } from '../ports/post.repository.port';
 
 function toStatus(s: PostStatus): PostStatus {
@@ -55,9 +55,15 @@ function mapRow(
 export class PrismaPostRepository implements IPostRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  /** Prisma model delegates; typed as any so we don't depend on generated client module for types. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private get db(): any {
+    return this.prisma;
+  }
+
   async create(data: PostCreateInput): Promise<PostEntity> {
     const tagIds = await this.ensureTagIds(data.tagNames);
-    const post = await this.prisma.post.create({
+    const post = await this.db.post.create({
       data: {
         slug: data.slug,
         title: data.title,
@@ -76,7 +82,7 @@ export class PrismaPostRepository implements IPostRepository {
   }
 
   async update(id: number, data: PostUpdateInput): Promise<PostEntity> {
-    const existing = await this.prisma.post.findUnique({
+    const existing = await this.db.post.findUnique({
       where: { id },
       include: { tags: { include: { tag: true } } },
     });
@@ -84,8 +90,11 @@ export class PrismaPostRepository implements IPostRepository {
       throw new Error(`Post ${id} not found`);
     }
     const tagIds = data.tagNames != null ? await this.ensureTagIds(data.tagNames) : undefined;
-    await this.prisma.postTag.deleteMany({ where: { postId: id } });
-    const post = await this.prisma.post.update({
+    await this.db.post.update({
+      where: { id },
+      data: { tags: { deleteMany: {} } },
+    });
+    const post = await this.db.post.update({
       where: { id },
       data: {
         ...(data.slug != null && { slug: data.slug }),
@@ -107,7 +116,7 @@ export class PrismaPostRepository implements IPostRepository {
   }
 
   async findById(id: number): Promise<PostEntity | null> {
-    const post = await this.prisma.post.findUnique({
+    const post = await this.db.post.findUnique({
       where: { id },
       include: { tags: { include: { tag: true } } },
     });
@@ -115,7 +124,7 @@ export class PrismaPostRepository implements IPostRepository {
   }
 
   async findBySlug(slug: string): Promise<PostEntity | null> {
-    const post = await this.prisma.post.findUnique({
+    const post = await this.db.post.findUnique({
       where: { slug },
       include: { tags: { include: { tag: true } } },
     });
@@ -123,33 +132,33 @@ export class PrismaPostRepository implements IPostRepository {
   }
 
   async listAll(): Promise<PostEntity[]> {
-    const posts = await this.prisma.post.findMany({
+    const posts = await this.db.post.findMany({
       include: { tags: { include: { tag: true } } },
       orderBy: { updatedAt: 'desc' },
     });
-    return posts.map((p) => mapRow(p) as PostEntity);
+    return posts.map((p: Parameters<typeof mapRow>[0]) => mapRow(p) as PostEntity);
   }
 
   async listPublished(): Promise<PostEntity[]> {
-    const posts = await this.prisma.post.findMany({
+    const posts = await this.db.post.findMany({
       where: { status: 'PUBLISHED', publishedAt: { not: null } },
       include: { tags: { include: { tag: true } } },
       orderBy: { publishedAt: 'desc' },
     });
-    return posts.map((p) => mapRow(p) as PostEntity);
+    return posts.map((p: Parameters<typeof mapRow>[0]) => mapRow(p) as PostEntity);
   }
 
   async listAllWithAnalytics(): Promise<
     (PostEntity & { viewsLast30Days: number; clickThroughRate: number })[]
   > {
-    const posts = await this.prisma.post.findMany({
+    const posts = await this.db.post.findMany({
       include: {
         tags: { include: { tag: true } },
         postAnalytics: true,
       },
       orderBy: { updatedAt: 'desc' },
     });
-    return posts.map((p) => {
+    return posts.map((p: Parameters<typeof mapRow>[0] & { postAnalytics?: { viewsLast30Days: number; clickThroughRate: number } | null }) => {
       const entity = mapRow(p) as PostEntity;
       const a = p.postAnalytics;
       return {
@@ -163,7 +172,7 @@ export class PrismaPostRepository implements IPostRepository {
   private async ensureTagIds(names: string[]): Promise<number[]> {
     const ids: number[] = [];
     for (const name of names) {
-      const tag = await this.prisma.tag.upsert({
+      const tag = await this.db.tag.upsert({
         where: { name },
         create: { name },
         update: {},

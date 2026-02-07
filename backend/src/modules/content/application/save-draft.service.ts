@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PostStatus } from '@prisma/client';
+import { PostStatus } from '../ports/post.repository.port';
 import { IPostRepository, POST_REPOSITORY } from '../ports/post.repository.port';
 
 export interface SaveDraftCommand {

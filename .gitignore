@@ -12,6 +12,7 @@ out/
 # Build & cache
 dist/
 build/
+backend/src/generated/
 *.tsbuildinfo
 .turbo
 .vite/
