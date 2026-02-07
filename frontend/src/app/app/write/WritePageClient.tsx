@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { PostEditorData, PostStatus } from "@/lib/types";
+import { revalidateBlogHome } from "@/lib/actions/revalidate";
 import Box from "@/components/atoms/Box";
 import Button from "@/components/atoms/Button";
 import Flex from "@/components/atoms/Flex";
@@ -26,14 +27,37 @@ interface SaveDraftPayload {
 
 const AUTOSAVE_DEBOUNCE_MS = 800;
 
-async function saveDraft(payload: SaveDraftPayload) {
-  await fetch("/admin/posts/save-draft", {
+/** Slugify title for URL-safe slug, or return a unique draft slug when title is empty. */
+function effectiveSlug(slug: string, title: string): string {
+  const trimmed = slug.trim();
+  if (trimmed.length > 0) return trimmed;
+  if (title.trim().length > 0) {
+    return title
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+  }
+  return `draft-${Date.now()}`;
+}
+
+function getApiBaseUrl() {
+  if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_API_BASE_URL) {
+    return process.env.NEXT_PUBLIC_API_BASE_URL.replace(/\/$/, "");
+  }
+  return "http://localhost:4000";
+}
+
+async function saveDraft(payload: SaveDraftPayload): Promise<{ id: number }> {
+  const res = await fetch(`${getApiBaseUrl()}/api/admin/posts/save-draft`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
   });
+  if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+  return res.json();
 }
 
 const formatTime = (date: Date) =>
@@ -54,8 +78,13 @@ const WritePageClient = ({ initialData }: { initialData: PostEditorData }) => {
   const [status, setStatus] = useState<PostStatus>(initialData.status);
   const [savingState, setSavingState] = useState<SavingState>("idle");
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+  /** After first save of a new post, backend returns id; we keep it so subsequent autosaves update instead of creating again. */
+  const [savedPostId, setSavedPostId] = useState<number | null>(
+    initialData.post?.id ?? null
+  );
 
   const saveTimeoutRef = useRef<number | null>(null);
+  const currentId = savedPostId ?? initialData.post?.id ?? null;
 
   useEffect(() => {
     if (!title && !body && !description) {
@@ -70,17 +99,28 @@ const WritePageClient = ({ initialData }: { initialData: PostEditorData }) => {
 
     saveTimeoutRef.current = window.setTimeout(async () => {
       try {
-        await saveDraft({
-          id: initialData.post?.id ?? null,
-          title,
+        const slugToSend = effectiveSlug(slug, title);
+        const payload = {
+          id: currentId,
+          title: title.trim() || "Untitled",
           body,
-          slug,
+          slug: slugToSend,
           description,
           status,
           scheduledFor: initialData.scheduledFor
-        });
+        };
+        const result = await saveDraft(payload);
+        if (currentId == null && result.id != null) {
+          setSavedPostId(result.id);
+          if (slug.trim().length === 0) setSlug(slugToSend);
+        }
         setSavingState("saved");
         setLastSavedAt(new Date());
+        if (payload.status === "published") {
+          revalidateBlogHome().catch(() => {
+            // Non-blocking; blog will show new post on next full load
+          });
+        }
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error("Failed to autosave draft", error);
@@ -93,7 +133,7 @@ const WritePageClient = ({ initialData }: { initialData: PostEditorData }) => {
         window.clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [title, body, slug, description, status, initialData.post?.id, initialData.scheduledFor]);
+  }, [title, body, slug, description, status, currentId, initialData.scheduledFor]);
 
   const autosaveLabel =
     savingState === "saving"

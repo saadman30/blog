@@ -5,10 +5,8 @@ import type {
   PostEditorData,
   PostInsight
 } from "../types";
-import { mockPosts } from "../mockData";
 
 const getBaseUrl = () => {
-  // Server-side (e.g. Docker): use API_BASE_URL so Next.js can reach the api service by hostname
   if (typeof window === "undefined" && process.env.API_BASE_URL) {
     return process.env.API_BASE_URL;
   }
@@ -34,183 +32,42 @@ async function handleJson<T>(res: Response): Promise<T> {
 export const api = {
   async listPosts(): Promise<Post[]> {
     try {
-      const res = await fetch(buildUrl("/posts"), {
+      const res = await fetch(buildUrl("/api/public/posts"), {
         next: { revalidate: 60 }
       });
       return handleJson<Post[]>(res);
     } catch (error) {
-      // During build (e.g. in Docker), the JSON server might not be running.
-      // In that case, gracefully fall back to an empty list instead of failing the build.
       console.warn("listPosts: falling back to empty list due to fetch error:", error);
       return [];
     }
   },
 
   async getPostBySlug(slug: string): Promise<Post | null> {
-    const res = await fetch(buildUrl(`/posts?slug=${encodeURIComponent(slug)}`), {
+    const res = await fetch(buildUrl(`/api/public/posts/by-slug/${encodeURIComponent(slug)}`), {
       next: { revalidate: 60 }
     });
-    const list = await handleJson<Post[]>(res);
-    return list[0] ?? null;
+    const data = await handleJson<Post | null>(res);
+    return data;
   },
 
-  /**
-   * Admin-only: list posts with workflow + analytics metadata for the Posts screen.
-   * For now this is populated entirely from mockPosts so the admin can run
-   * without a dedicated backend.
-   */
   async listAdminPosts(): Promise<PostAdminSummary[]> {
-    // Derive simple admin summaries from the existing mock posts.
-    return mockPosts.map((post, index): PostAdminSummary => {
-      const viewsLast30Days = 1200 - index * 220;
-      const clickThroughRate = index === 0 ? 0.22 : index === 1 ? 0.09 : 0.04;
-      const seoHealth =
-        clickThroughRate >= 0.18
-          ? "healthy"
-          : clickThroughRate >= 0.08
-            ? "needs_attention"
-            : "poor";
-
-      return {
-        id: post.id,
-        slug: post.slug,
-        title: post.title,
-        status: index === 2 ? "draft" : "published",
-        lastUpdatedAt: post.publishedAt,
-        viewsLast30Days,
-        clickThroughRate,
-        seoHealth,
-        publishedAt: index === 2 ? null : post.publishedAt
-      };
-    });
+    const res = await fetch(buildUrl("/api/admin/posts"));
+    return handleJson<PostAdminSummary[]>(res);
   },
 
-  /**
-   * Admin-only: fetch editor-focused data for a single post (or a new draft).
-   * For now this is resolved entirely from mockPosts and does not call the API.
-   */
   async getPostEditorData(id: number | "new"): Promise<PostEditorData> {
-    if (id === "new") {
-      return {
-        post: null,
-        status: "draft",
-        scheduledFor: null,
-        seo: {
-          title: "",
-          description: "",
-          slug: ""
-        },
-        previewUrl: "/blog/preview"
-      };
-    }
-
-    const existing = mockPosts.find((post) => post.id === id) ?? null;
-
-    if (!existing) {
-      return {
-        post: null,
-        status: "draft",
-        scheduledFor: null,
-        seo: {
-          title: "",
-          description: "",
-          slug: ""
-        },
-        previewUrl: "/blog/preview"
-      };
-    }
-
-    return {
-      post: existing,
-      status: "published",
-      scheduledFor: null,
-      seo: {
-        title: existing.title,
-        description: existing.excerpt,
-        slug: existing.slug
-      },
-      previewUrl: `/blog/${existing.slug}`
-    };
+    const path = id === "new" ? "/api/admin/posts/new/editor-data" : `/api/admin/posts/${id}/editor-data`;
+    const res = await fetch(buildUrl(path));
+    return handleJson<PostEditorData>(res);
   },
 
-  /**
-   * Admin-only: fetch aggregated insights that directly drive actions.
-   * Currently derived from the mock admin posts without hitting an API.
-   */
   async getInsights(): Promise<PostInsight[]> {
-    const adminPosts = await this.listAdminPosts();
-    const sortedByViews = [...adminPosts].sort(
-      (a, b) => b.viewsLast30Days - a.viewsLast30Days
-    );
-
-    const topPosts = sortedByViews.slice(0, 3);
-    const decaying = sortedByViews.slice(-2);
-    const highTrafficLowCtr = sortedByViews.filter(
-      (post) => post.viewsLast30Days >= 800 && post.clickThroughRate < 0.1
-    );
-
-    const mapPosts = (posts: PostAdminSummary[]) => posts;
-
-    return [
-      {
-        id: "top-posts-30d",
-        kind: "topPosts",
-        title: "Top posts (last 30 days)",
-        description:
-          "These posts are carrying most of your traffic. Keep them fresh and aligned with your current thinking.",
-        posts: mapPosts(topPosts),
-        action: {
-          label: "Update post",
-          href: topPosts[0] ? `/app/write?postId=${topPosts[0].id}` : "/app/write"
-        }
-      },
-      {
-        id: "decaying-posts",
-        kind: "decayingPosts",
-        title: "Decaying posts",
-        description:
-          "Once-strong posts that are slowly fading. A small refresh can often revive them.",
-        posts: mapPosts(decaying),
-        action: {
-          label: "Refresh content",
-          href: decaying[0] ? `/app/write?postId=${decaying[0].id}` : "/app/write"
-        }
-      },
-      {
-        id: "high-read-low-share",
-        kind: "highReadLowShare",
-        title: "High-read, low-commitment posts",
-        description:
-          "Readers are interested but not clicking deeper. Consider adding a stronger follow-up or CTA.",
-        posts: mapPosts(highTrafficLowCtr),
-        action: {
-          label: "Write follow-up",
-          href: "/app/write"
-        }
-      }
-    ];
+    const res = await fetch(buildUrl("/api/admin/insights"));
+    return handleJson<PostInsight[]>(res);
   },
 
-  /**
-   * Admin-only: fetch current admin/settings values.
-   * Simple, boring defaults suitable for a solo writer.
-   */
   async getAdminSettings(): Promise<AdminSettings> {
-    return {
-      seoDefaults: {
-        defaultTitleSuffix: "• Minimalist Studio",
-        defaultDescription:
-          "Long-form writing on product, engineering, and design.",
-        defaultOgImageUrl: "https://example.com/og/default.png"
-      },
-      authorName: "Minimalist Studio",
-      authorBio:
-        "Solo technical writer exploring the edges of product, engineering, and calm tooling.",
-      integrations: {
-        rssEnabled: true,
-        emailDigestEnabled: false
-      }
-    };
+    const res = await fetch(buildUrl("/api/admin/settings"));
+    return handleJson<AdminSettings>(res);
   }
 };
-

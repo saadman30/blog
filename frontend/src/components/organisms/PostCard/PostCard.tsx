@@ -27,7 +27,7 @@ const PostCard = ({ post, onTagClick }: Props) => {
     post.readingMinutesOverride ?? estimateReadingMinutes(post.body);
 
   const date = new Date(post.publishedAt);
-  const formattedDate = date.toLocaleDateString(undefined, {
+  const formattedDate = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric"

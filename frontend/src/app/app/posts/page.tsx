@@ -27,8 +27,12 @@ const FILTERS: FilterConfig[] = [
   { id: "highTrafficLowCtr", label: "High traffic / low CTR" },
 ];
 
+const HIGH_TRAFFIC_MIN_VIEWS = 1000;
+const LOW_CTR_MAX = 0.08;
+
 const PostsPage = () => {
   const [posts, setPosts] = useState<PostAdminSummary[]>([]);
+  const [activeFilter, setActiveFilter] = useState<FilterId>("all");
 
   useEffect(() => {
     let isMounted = true;
@@ -50,10 +54,22 @@ const PostsPage = () => {
     };
   }, []);
 
-  const filteredPosts = useMemo(
-    () => posts.filter((post) => post.status === "draft"),
-    [posts],
-  );
+  const filteredPosts = useMemo(() => {
+    switch (activeFilter) {
+      case "drafts":
+        return posts.filter((post) => post.status === "draft");
+      case "needsUpdate":
+        return posts.filter((post) => post.seoHealth !== "healthy");
+      case "highTrafficLowCtr":
+        return posts.filter(
+          (post) =>
+            post.viewsLast30Days >= HIGH_TRAFFIC_MIN_VIEWS &&
+            post.clickThroughRate <= LOW_CTR_MAX
+        );
+      default:
+        return posts;
+    }
+  }, [posts, activeFilter]);
 
   const formatDate = (iso: string | null) => {
     if (!iso) {
@@ -104,8 +120,8 @@ const PostsPage = () => {
               key={filter.id}
               type="button"
               variant="ghost"
-              // In this simplified version, only drafts are actively filtered.
-              pressed={filter.id === "drafts"}
+              pressed={filter.id === activeFilter}
+              onClick={() => setActiveFilter(filter.id)}
             >
               {filter.label}
             </Button>

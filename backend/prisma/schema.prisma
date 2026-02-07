@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id                    Int       @id @default(autoincrement())
+  slug                  String    @unique
+  title                 String
+  excerpt               String
+  body                  String
+  status                PostStatus @default(DRAFT)
+  publishedAt           DateTime?
+  scheduledFor          DateTime?
+  readingMinutesOverride Int?
+  coverImage            String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  tags                  PostTag[]
+  postAnalytics         PostAnalytics?
+}
+
+model Tag {
+  id   Int   @id @default(autoincrement())
+  name String @unique
+  posts PostTag[]
+}
+
+model PostTag {
+  postId Int
+  tagId  Int
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
+
+model PostAnalytics {
+  id                Int     @id @default(autoincrement())
+  postId            Int     @unique
+  post              Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  viewsLast30Days   Int     @default(0)
+  clickThroughRate  Float   @default(0)
+}
+
+model AdminSettings {
+  id                   Int     @id @default(autoincrement())
+  seoTitleSuffix       String  @default("• Minimalist Studio")
+  seoDefaultDescription String @default("Long-form writing on product, engineering, and design.")
+  seoDefaultOgImageUrl String  @default("https://example.com/og/default.png")
+  authorName           String  @default("Minimalist Studio")
+  authorBio            String  @default("Solo technical writer exploring the edges of product, engineering, and calm tooling.")
+  rssEnabled           Boolean @default(true)
+  emailDigestEnabled   Boolean @default(false)
+  updatedAt            DateTime @updatedAt
+}

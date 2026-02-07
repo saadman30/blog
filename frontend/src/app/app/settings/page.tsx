@@ -40,7 +40,8 @@ const SettingsPage = () => {
 
     try {
       setIsSaving(true);
-      await fetch("/admin/settings", {
+      const base = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "http://localhost:4000";
+      const res = await fetch(`${base}/api/admin/settings`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -52,6 +53,7 @@ const SettingsPage = () => {
           integrations
         })
       });
+      if (!res.ok) throw new Error("Failed to save settings");
     } finally {
       setIsSaving(false);
     }
