@@ -2,6 +2,8 @@
 
 This document describes the architecture of the blog backend: a **NestJS** application using **modular design**, **ports & adapters (hexagonal)** for persistence, and **application services** for use cases. Examples are taken from the project.
 
+> **Tutorial:** For a detailed explanation of **how NestJS works**, how it wraps Express to reduce complexity, and a walkthrough of this project’s ins and outs with code examples, see [NESTJS-TUTORIAL.md](./NESTJS-TUTORIAL.md).
+
 ---
 
 ## 1. High-Level Overview
